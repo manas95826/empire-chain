@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "empire-chain"
-version = "0.2.0"
+version = "0.2.2"
 description = "An orchestration framework for all your AI needs"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -16,8 +16,9 @@ dependencies = [
     "chromadb",
     "sentence-transformers",
     "PyPDF2",
-    "docx"
+    "python-docx"
 ]
 
 [tool.setuptools.packages.find]
-where = ["empire_chain"]
+where = ["."]
+include = ["empire_chain*"]
