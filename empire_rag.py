@@ -13,7 +13,7 @@ def main():
     llm = OpenAILLM("gpt-4o-mini")
     reader = DocumentReader()
     
-    file_path = "sample.pdf"
+    file_path = "input.pdf"
     text = reader.read(file_path)
     
     text_embedding = embeddings.embed(text)

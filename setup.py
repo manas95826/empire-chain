@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="empire-chain",
-    version="0.1.4",
+    version="0.2.0",
     description="An orchestration framework for all your AI needs",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
@@ -16,6 +16,9 @@ setup(
         "groq",
         "qdrant-client",
         "chromadb",
+        "sentence-transformers",
+        "PyPDF2",
+        "docx"
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
