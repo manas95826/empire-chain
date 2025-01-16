@@ -21,7 +21,8 @@ setup(
         "python-docx",
         "yfinance",
         "duckduckgo-search",
-        "phidata"
+        "phidata",
+        "streamlit"
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

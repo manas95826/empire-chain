@@ -19,7 +19,8 @@ dependencies = [
     "python-docx",
     "yfinance",
     "duckduckgo-search",
-    "phidata"
+    "phidata",
+    "streamlit"
 ]
 
 [tool.setuptools.packages.find]
