@@ -6,7 +6,7 @@ An orchestration framework for all your AI needs.
 pip install empire_chain
 ```
 
-## Usage
+## RAG Example
 
 ```python
 from empire_chain.vector_stores import QdrantVectorStore
@@ -44,6 +44,21 @@ if __name__ == "__main__":
     main()
 ```
 
+# PhiData Agents
+
+```python
+from empire_chain.phidata_agents import PhiWebAgent, PhiFinanceAgent
+from dotenv import load_dotenv
+
+load_dotenv()
+
+web_agent = PhiWebAgent()
+web_agent.generate("What is the recent news about Tesla with sources?")
+
+finance_agent = PhiFinanceAgent()
+finance_agent.generate("What is the price of Tesla?")
+```
+
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
