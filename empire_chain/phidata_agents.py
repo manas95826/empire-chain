@@ -26,4 +26,3 @@ class PhiFinanceAgent(Agent):
 
     def generate(self, prompt: str) -> str:
         return self.print_response(prompt, stream=True)
-

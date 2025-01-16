@@ -16,7 +16,10 @@ dependencies = [
     "chromadb",
     "sentence-transformers",
     "PyPDF2",
-    "python-docx"
+    "python-docx",
+    "yfinance",
+    "duckduckgo-search",
+    "phidata"
 ]
 
 [tool.setuptools.packages.find]

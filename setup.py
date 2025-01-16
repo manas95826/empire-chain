@@ -18,7 +18,10 @@ setup(
         "chromadb",
         "sentence-transformers",
         "PyPDF2",
-        "python-docx"
+        "python-docx",
+        "yfinance",
+        "duckduckgo-search",
+        "phidata"
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
