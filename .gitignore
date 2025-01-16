@@ -5,3 +5,5 @@ dist
 *.egg-info
 pycache
 __pycache__
+sample.pdf
+input.pdf
