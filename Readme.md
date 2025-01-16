@@ -59,6 +59,16 @@ finance_agent = PhiFinanceAgent()
 finance_agent.generate("What is the price of Tesla?")
 ```
 
+## Streamlit Chatbot
+
+```python
+from empire_chain.streamlit import Chatbot
+from empire_chain.llms import OpenAILLM
+
+chatbot = Chatbot(llm=OpenAILLM("gpt-4o-mini"), title="Empire Chain Chatbot")
+chatbot.chat()
+```
+
 ## License
 
 This project is licensed under the MIT License.

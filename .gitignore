@@ -7,3 +7,4 @@ pycache
 __pycache__
 sample.pdf
 input.pdf
+.pypirc
