@@ -59,13 +59,22 @@ finance_agent = PhiFinanceAgent()
 finance_agent.generate("What is the price of Tesla?")
 ```
 
-## Streamlit Chatbot
+## Simple Chatbot
 
 ```python
 from empire_chain.streamlit import Chatbot
 from empire_chain.llms import OpenAILLM
 
 chatbot = Chatbot(llm=OpenAILLM("gpt-4o-mini"), title="Empire Chain Chatbot")
+chatbot.chat()
+```
+
+## Vision Chatbot
+
+```python
+from empire_chain.streamlit import VisionChatbot
+
+chatbot = VisionChatbot(title="Empire Chain Chatbot")
 chatbot.chat()
 ```
 
