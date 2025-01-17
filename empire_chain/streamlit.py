@@ -13,10 +13,12 @@ import tempfile
 load_dotenv()
 
 class Chatbot:
-    def __init__(self, llm: OpenAILLM, title: str, chat_history: bool = True):
+    def __init__(self, llm: OpenAILLM, title: str, chat_history: bool = True, custom_instructions: str = "", verbose: bool = True):
         self.llm = llm
         self.title = title
         self.chat_history = chat_history
+        self.custom_instructions = custom_instructions
+        self.verbose = verbose
         
         if 'messages' not in st.session_state:
             st.session_state.messages = []
@@ -78,17 +80,19 @@ class Chatbot:
             st.markdown("*Make your RAG solution in just 30 lines of code!*")
 
     def chat(self):
-        self.display_sidebar()
+        if self.verbose:
+            self.display_sidebar()
         
         with st.container():
             st.title(self.title)
             
-            st.markdown("""
-            Welcome to the Empire Chain Demo! This chatbot showcases the capabilities 
-            of our AI orchestration framework. Feel free to ask questions about anything!
-            """)
+            if self.verbose:
+                st.markdown("""
+                Welcome to the Empire Chain Demo! This chatbot showcases the capabilities 
+                of our AI orchestration framework. Feel free to ask questions about anything!
+                """)
             
-            st.divider()
+            # st.divider()
             st.subheader("Example Queries")
             self.display_example_queries()
             
@@ -117,7 +121,7 @@ class Chatbot:
                 with placeholder:
                     with st.spinner("Thinking..."):
                         if self.chat_history:
-                            conversation_history = ""
+                            conversation_history = f"{self.custom_instructions}\n"
                             for message in st.session_state.messages:
                                 conversation_history += f"{message['role']}: {message['content']}\n"
                             full_prompt = f"Previous conversation history:\n{conversation_history}\nNew query: {prompt}"
@@ -130,10 +134,12 @@ class Chatbot:
 
 
 class VisionChatbot:
-    def __init__(self, title: str, chat_history: bool = True):
+    def __init__(self, title: str, chat_history: bool = True, custom_instructions: str = "", verbose: bool = True):
         self.title = title
         self.groq_client = Groq()
         self.chat_history = chat_history
+        self.custom_instructions = custom_instructions
+        self.verbose = verbose
         
         if 'messages' not in st.session_state:
             st.session_state.messages = []
@@ -158,7 +164,7 @@ class VisionChatbot:
                     "content": [
                         {
                             "type": "text",
-                            "text": query
+                            "text": f"{self.custom_instructions}\n\n{query}"
                         },
                         {
                             "type": "image_url",
@@ -232,17 +238,19 @@ class VisionChatbot:
             st.markdown("*Make your RAG solution in just 30 lines of code!*")
 
     def chat(self):
-        self.display_sidebar()
+        if self.verbose:
+            self.display_sidebar()
         
         with st.container():
             st.title(self.title)
             
-            st.markdown("""
-            Welcome to the Empire Chain Vision Demo! This chatbot can analyze images and answer questions about them.
-            Upload an image and ask questions about it!
-            """)
+            if self.verbose:
+                st.markdown("""
+                Welcome to the Empire Chain Vision Demo! This chatbot can analyze images and answer questions about them.
+                Upload an image and ask questions about it!
+                """)
             
-            st.divider()
+            # st.divider()
             st.subheader("Example Queries")
             self.display_example_queries()
             
@@ -282,12 +290,14 @@ class VisionChatbot:
 
 
 class PDFChatbot:
-    def __init__(self, title: str, llm: OpenAILLM, vector_store: QdrantVectorStore, embeddings: OpenAIEmbeddings, chat_history: bool = True):
+    def __init__(self, title: str, llm: OpenAILLM, vector_store: QdrantVectorStore, embeddings: OpenAIEmbeddings, chat_history: bool = True, custom_instructions: str = "", verbose: bool = True):
         self.title = title
         self.llm = llm
         self.vector_store = vector_store
         self.embeddings = embeddings
         self.chat_history = chat_history
+        self.custom_instructions = custom_instructions
+        self.verbose = verbose
         
         if 'messages' not in st.session_state:
             st.session_state.messages = []
@@ -349,20 +359,21 @@ class PDFChatbot:
                     st.session_state.example_query = example_queries["example4"]
 
     def chat(self):
-        self.display_sidebar()
+        if self.verbose:
+            self.display_sidebar()
         
         st.title(self.title)
         
-        st.markdown("""
-        Welcome to the Empire Chain PDF Chatbot! This chatbot can answer questions about a PDF file.
-        Upload a PDF file and ask questions about it!
-        """)
+        if self.verbose:
+            st.markdown("""
+            Welcome to the Empire Chain PDF Chatbot! This chatbot can answer questions about a PDF file.
+            Upload a PDF file and ask questions about it!
+            """)
         
-        st.divider()
+        # st.divider()
         st.subheader("Example Queries")
         self.display_example_queries()
         
-        # File uploader
         uploaded_file = st.file_uploader("Choose a PDF file...", type=["pdf"])
         if uploaded_file is not None:
             reader = DocumentReader()
@@ -402,7 +413,7 @@ class PDFChatbot:
                         query_embedding = self.embeddings.embed(prompt)
                         relevant_texts = self.vector_store.query(query_embedding, k=3)
                         context = "\n".join(relevant_texts)
-                        full_prompt = f"Based on the following context, {prompt}\n\nContext: {context}"
+                        full_prompt = f"{self.custom_instructions}\nBased on the following context, {prompt}\n\nContext: {context}"
                         response = self.llm.generate(full_prompt)
                     st.markdown(response)
                     st.session_state.messages.append({"role": "assistant", "content": response})
