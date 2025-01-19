@@ -22,7 +22,8 @@ dependencies = [
     "phidata",
     "streamlit",
     "numpy",
-    "Pillow"
+    "Pillow",
+    "matplotlib"
 ]
 
 [tool.setuptools.packages.find]

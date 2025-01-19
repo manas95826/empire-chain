@@ -24,7 +24,8 @@ setup(
         "phidata",
         "streamlit",
         "numpy",
-        "Pillow"
+        "Pillow",
+        "matplotlib"
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

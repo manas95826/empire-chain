@@ -61,3 +61,4 @@ urllib3==2.3.0
 PyPDF2==3.0.1
 qdrant-client==1.7.3
 chromadb==0.1.1
+matplotlib==3.8.1
