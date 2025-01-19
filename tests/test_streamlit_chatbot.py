@@ -60,7 +60,6 @@ class TestVisionChatbot(unittest.TestCase):
     def test_vision_chatbot_chat_flow(self, mock_chat_message, mock_chat_input, mock_file_uploader):
         chatbot = VisionChatbot(title="Test Vision Chatbot")
         
-        # Create a mock UploadedFile object
         mock_file = MagicMock()
         mock_file.read = MagicMock(return_value=self.test_image.tobytes())
         mock_file_uploader.return_value = mock_file
@@ -117,7 +116,6 @@ class TestPDFChatbot(unittest.TestCase):
             embeddings=self.embeddings
         )
         
-        # Create a mock UploadedFile object
         mock_file = MagicMock()
         mock_file.read = MagicMock(return_value=b"fake pdf content")
         mock_file_uploader.return_value = mock_file

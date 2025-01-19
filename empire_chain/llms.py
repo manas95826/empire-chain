@@ -16,7 +16,13 @@ class OpenAILLM(LLM):
         self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
     def generate(self, prompt: str) -> str:
-        response = self.client.chat.completions.create(model=self.model, messages=[{"role": "system", "content": self.custom_instructions}, {"role": "user", "content": prompt}])
+        response = self.client.chat.completions.create(
+            model=self.model,
+            messages=[
+                {"role": "system", "content": self.custom_instructions},
+                {"role": "user", "content": prompt}
+            ]
+        )
         return response.choices[0].message.content
 
 class AnthropicLLM(LLM):
@@ -28,16 +34,25 @@ class AnthropicLLM(LLM):
         response = self.client.messages.create(
             model=self.model,
             max_tokens=1000,
-            messages=[{"role": "system", "content": self.custom_instructions}, {"role": "user", "content": prompt}]
+            system=self.custom_instructions,
+            messages=[
+                {"role": "user", "content": prompt}
+            ]
         )
         return response.content[0].text
-    
+
 class GroqLLM(LLM):
     def __init__(self, model: str = "llama3-8b-8192", custom_instructions: str = ""):
         super().__init__(model, custom_instructions)
         self.client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
     def generate(self, prompt: str) -> str:
-        response = self.client.chat.completions.create(model=self.model, messages=[{"role": "system", "content": self.custom_instructions}, {"role": "user", "content": prompt}])
+        response = self.client.chat.completions.create(
+            model=self.model,
+            messages=[
+                {"role": "system", "content": self.custom_instructions},
+                {"role": "user", "content": prompt}
+            ]
+        )
         return response.choices[0].message.content
     

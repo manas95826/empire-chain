@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="empire-chain",
-    version="0.2.10",
+    version="0.2.11",
     description="An orchestration framework for all your AI needs",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
@@ -26,6 +26,7 @@ setup(
         "numpy",
         "Pillow",
         "matplotlib"
+        "docling"
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
