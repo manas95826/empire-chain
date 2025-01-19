@@ -55,7 +55,6 @@ Remember: Return ONLY the JSON object, no other text."""
         
         try:
             response = self.client.generate(prompt)
-            # Try to clean the response if it's not pure JSON
             response = response.strip()
             if response.startswith('```json'):
                 response = response[7:]
