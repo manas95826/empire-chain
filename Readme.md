@@ -90,6 +90,23 @@ pdf_chatbot = PDFChatbot(title="PDF Chatbot", llm=OpenAILLM("gpt-4o-mini"), vect
 pdf_chatbot.chat()
 ```
 
+## Visualizer
+
+```python
+from empire_chain.visualizer import DataAnalyzer, ChartFactory
+
+data = """
+Empire chain has secured a $100M Series A funding round from Sequoia Capital in 2024 and a $10M Series B funding round from Tiger Global in 2025.
+...
+"""
+
+analyzer = DataAnalyzer()
+analyzed_data = analyzer.analyze(data)
+
+chart = ChartFactory.create_chart('Bar Graph', analyzed_data)
+chart.show()
+```
+
 ## License
 
 This project is licensed under the MIT License.
