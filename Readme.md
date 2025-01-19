@@ -107,6 +107,17 @@ chart = ChartFactory.create_chart('Bar Graph', analyzed_data)
 chart.show()
 ```
 
+## Docling
+
+```python
+from empire_chain.docling import Docling
+
+docling = Docling()
+
+converted_doc = docling.convert("https://arxiv.org/pdf/2408.09869")
+docling.save_markdown(converted_doc, "arxiv_2408.09869.md")
+```
+
 ## License
 
 This project is licensed under the MIT License.
