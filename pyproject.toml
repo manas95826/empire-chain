@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "empire-chain"
-version = "0.2.11"
+version = "0.2.12"
 description = "An orchestration framework for all your AI needs"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -24,7 +24,11 @@ dependencies = [
     "numpy",
     "Pillow",
     "matplotlib",
-    "docling"
+    "docling",
+    "tqdm",
+    "soundfile",
+    "kokoro_onnx",
+    "python-dotenv"
 ]
 
 [tool.setuptools.packages.find]

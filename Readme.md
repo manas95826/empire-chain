@@ -118,6 +118,15 @@ converted_doc = docling.convert("https://arxiv.org/pdf/2408.09869")
 docling.save_markdown(converted_doc, "arxiv_2408.09869.md")
 ```
 
+## Podcast
+
+```python
+from empire_chain.podcast import GeneratePodcast
+
+podcast=GeneratePodcast()
+podcast.generate(topic="About boom of meal plan and recipe generation apps")
+```
+
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the LICENSE file for details.
