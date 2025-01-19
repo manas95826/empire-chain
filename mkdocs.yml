@@ -1,0 +1,51 @@
+site_name: Empire Chain
+site_description: Documentation for Empire Chain - A powerful data processing and AI chain framework
+repo_url: https://github.com/manas95826/empire-chain
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - search.highlight
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Installation: getting-started/installation.md
+      - Quick Start: getting-started/quickstart.md
+  - User Guide:
+      - Core Concepts: user-guide/core-concepts.md
+      - Document Processing: user-guide/document-processing.md
+      - LLM Integration: user-guide/llm-integration.md
+      - Visualization: user-guide/visualization.md
+  - Tutorials:
+      - Simple Chatbot: tutorials/simple-chatbot.md
+      - Chat with PDF: tutorials/chat-with-pdf.md
+      - Chat with Images: tutorials/chat-with-images.md
+      - Empire RAG: tutorials/empire-rag.md
+  - Contributing: contributing.md 
