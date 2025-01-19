@@ -9,9 +9,14 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
   deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -31,6 +36,17 @@ jobs:
           pip install mkdocs-material
           pip install mkdocs-mermaid2-plugin
       
-      - name: Build and Deploy Documentation
-        run: |
-          mkdocs gh-deploy --force 
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      
+      - name: Build
+        run: mkdocs build
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'site'
+      
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4 
