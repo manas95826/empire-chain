@@ -8,3 +8,5 @@ __pycache__
 sample.pdf
 input.pdf
 .pypirc
+token.pickle
+client_secret.json

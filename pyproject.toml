@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "empire-chain"
-version = "0.2.12"
+version = "0.2.13"
 description = "An orchestration framework for all your AI needs"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -28,7 +28,10 @@ dependencies = [
     "tqdm",
     "soundfile",
     "kokoro_onnx",
-    "python-dotenv"
+    "python-dotenv",
+    "google-api-python-client",
+    "google-auth-httplib2",
+    "google-auth-oauthlib"
 ]
 
 [tool.setuptools.packages.find]

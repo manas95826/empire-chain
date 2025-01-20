@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="empire-chain",
-    version="0.2.12",
+    version="0.2.13",
     description="An orchestration framework for all your AI needs",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
@@ -30,7 +30,10 @@ setup(
         "tqdm",
         "soundfile",
         "kokoro_onnx",
-        "python-dotenv"
+        "python-dotenv",
+        "google-api-python-client",
+        "google-auth-httplib2",
+        "google-auth-oauthlib"
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

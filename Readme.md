@@ -6,6 +6,18 @@ An orchestration framework for all your AI needs.
 pip install empire_chain
 ```
 
+## Google Drive Authentication
+
+```bash
+from empire_chain.file_reader import DocumentReader
+
+reader = DocumentReader()
+
+text = reader.read("your_drive_link/your_file_name")
+
+print(text)
+```
+
 ## RAG Example
 
 ```python
