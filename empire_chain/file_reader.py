@@ -4,14 +4,10 @@ import PyPDF2
 import docx
 import json
 import csv
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
-from googleapiclient.discovery import build
-from googleapiclient.http import MediaIoBaseDownload
+import requests
+import webbrowser
 import io
 import os
-import pickle
 
 class FileReader(Protocol):
     def read(self, file_path: str) -> str:
@@ -55,118 +51,60 @@ class CSVReader(FileReader):
         return text
 
 class GoogleDocsReader(FileReader):
-    def __init__(self):
-        """Initialize Google Drive reader with OAuth authentication."""
-        self.SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
-        self.creds = None
-        self.token_path = 'token.pickle'
-    
-    def _get_credentials(self):
-        """Gets valid user credentials from storage or initiates OAuth flow.
-        
-        Returns:
-            Credentials, the obtained credential.
-        """
-        if os.path.exists(self.token_path):
-            with open(self.token_path, 'rb') as token:
-                self.creds = pickle.load(token)
-
-        if not self.creds or not self.creds.valid:
-            if self.creds and self.creds.expired and self.creds.refresh_token:
-                self.creds.refresh(Request())
-            else:
-                flow = InstalledAppFlow.from_client_secrets_file(
-                    'client_secrets.json',  # This will be created by the user
-                    self.SCOPES,
-                    redirect_uri='http://localhost:8080'
-                )
-                self.creds = flow.run_local_server(port=8080)
-                
-            with open(self.token_path, 'wb') as token:
-                pickle.dump(self.creds, token)
-
-        return self.creds
-
-    def _extract_file_id(self, file_path: str) -> str:
-        """Extract file ID from Google Drive URL or return as is if already an ID."""
-        if 'drive.google.com' in file_path:
-            if '/file/d/' in file_path:
-                file_id = file_path.split('/file/d/')[1].split('/')[0]
-            elif '/document/d/' in file_path:
-                file_id = file_path.split('/document/d/')[1].split('/')[0]
-            else:
-                raise ValueError(
-                    "Invalid Google Drive URL format. Please use the 'Share' link from Google Drive."
-                )
-            return file_id
-        return file_path
-
     def read(self, file_path: str) -> str:
         """Reads a Google Drive file and returns its content as text.
         
         Args:
-            file_path: The Google Drive file ID or URL
+            file_path: The Google Drive file URL
             
         Returns:
             str: The document content as text
             
         Raises:
-            ValueError: If authentication fails or file cannot be accessed
+            ValueError: If file cannot be accessed
         """
-        try:
-            creds = self._get_credentials()
-        except Exception as e:
-            raise ValueError(
-                "Authentication failed. Please make sure you have client_secrets.json in your working directory. "
-                "You can get it from Google Cloud Console > APIs & Services > Credentials > Create Credentials > OAuth Client ID. "
-                f"Error: {str(e)}"
-            )
+        if not 'drive.google.com' in file_path:
+            raise ValueError("Not a valid Google Drive URL")
             
-        drive_service = build('drive', 'v3', credentials=creds)
-        docs_service = build('docs', 'v1', credentials=creds)
-        
-        file_id = self._extract_file_id(file_path)
+        # Extract file ID
+        if '/file/d/' in file_path:
+            file_id = file_path.split('/file/d/')[1].split('/')[0]
+        elif '/document/d/' in file_path:
+            file_id = file_path.split('/document/d/')[1].split('/')[0]
+        else:
+            raise ValueError("Invalid Google Drive URL format. Please use the 'Share' link from Google Drive.")
+
+        download_url = f"https://drive.google.com/uc?export=download&id={file_id}"
         
         try:
-            file_metadata = drive_service.files().get(fileId=file_id, fields='mimeType').execute()
-            mime_type = file_metadata['mimeType']
+            response = requests.get(download_url)
             
-            if mime_type == 'application/vnd.google-apps.document':
-                document = docs_service.documents().get(documentId=file_id).execute()
-                text = ""
-                for content in document.get('body').get('content'):
-                    if 'paragraph' in content:
-                        for element in content.get('paragraph').get('elements'):
-                            if 'textRun' in element:
-                                text += element.get('textRun').get('content')
-                return text
+            if response.status_code == 403 or 'Sign in' in response.text:
+                print("\nPlease sign in with your Google account to access this file.")
+                print("A browser window will open. After signing in, please try again.")
+                webbrowser.open(file_path)
+                raise ValueError("Please authenticate through your browser and try again")
                 
-            else:
-                request = drive_service.files().get_media(fileId=file_id)
-                file_content = io.BytesIO()
-                downloader = MediaIoBaseDownload(file_content, request)
-                done = False
-                while not done:
-                    _, done = downloader.next_chunk()
-                
-                file_content.seek(0)
-                
-                if mime_type == 'application/pdf':
-                    reader = PyPDF2.PdfReader(file_content)
-                    text = ""
-                    for page in reader.pages:
-                        text += page.extract_text() + "\n"
-                    return text
-                elif mime_type in ['application/vnd.openxmlformats-officedocument.wordprocessingml.document']:
-                    doc = docx.Document(file_content)
+            if response.status_code != 200:
+                raise ValueError("Could not access file. Make sure the file is shared and accessible.")
+            
+            content = io.BytesIO(response.content)
+            
+            if b'%PDF' in response.content[:1024]:
+                reader = PyPDF2.PdfReader(content)
+                return "\n".join(page.extract_text() for page in reader.pages)
+            
+            try:
+                return response.content.decode('utf-8')
+            except UnicodeDecodeError:
+                try:
+                    doc = docx.Document(content)
                     return "\n".join(paragraph.text for paragraph in doc.paragraphs)
-                elif mime_type == 'text/plain':
-                    return file_content.read().decode('utf-8')
-                else:
-                    raise ValueError(f"Unsupported Google Drive file type: {mime_type}")
+                except:
+                    raise ValueError("Unsupported file type or file is corrupted")
                     
-        except Exception as e:
-            raise ValueError(f"Could not read Google Drive file: {str(e)}")
+        except requests.RequestException as e:
+            raise ValueError(f"Error accessing Google Drive file: {str(e)}")
 
 class DocumentReader:
     def __init__(self):
@@ -194,7 +132,7 @@ class DocumentReader:
             str: Text content of the file
             
         Raises:
-            ValueError: If file type is not supported or authentication fails
+            ValueError: If file type is not supported or file cannot be accessed
         """
         if self._is_google_drive_url(file_path):
             return self.google_reader.read(file_path)
