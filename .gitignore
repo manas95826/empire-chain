@@ -10,3 +10,5 @@ input.pdf
 .pypirc
 token.pickle
 client_secret.json
+audio.mp3
+video.mp4
