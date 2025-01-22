@@ -1,37 +1,70 @@
 # Installation Guide
 
-## Prerequisites
+## Requirements
 
-Before installing Empire Chain, ensure you have the following prerequisites:
+Empire Chain requires Python 3.10 or later.
 
-- Python 3.8 or higher
-- pip (Python package installer)
-- Virtual environment (recommended)
+## Installation
 
-## Installation Methods
-
-### 1. Using pip (Recommended)
+You can install Empire Chain using pip:
 
 ```bash
 pip install empire-chain
 ```
 
-### 2. From Source
+## Dependencies
 
-To install the latest development version:
+Empire Chain comes with the following core dependencies:
+
+### LLM Providers
+- `openai` - OpenAI API client
+- `anthropic` - Anthropic API client
+- `groq` - Groq API client
+
+### Vector Stores
+- `qdrant-client` - Qdrant vector database client
+- `chromadb` - ChromaDB vector database
+- `sentence-transformers` - For embeddings generation
+
+### Document Processing
+- `PyPDF2` - PDF processing
+- `python-docx` - Word document processing
+- `docling` - Document analysis
+
+### Web and Data
+- `crawl4ai` - Web crawling
+- `duckduckgo-search` - Web search capabilities
+- `yfinance` - Financial data access
+
+### Visualization and UI
+- `streamlit` - Interactive UI components
+- `matplotlib` - Data visualization
+- `Pillow` - Image processing
+
+### Audio Processing
+- `soundfile` - Audio file handling
+- `kokoro_onnx` - Speech processing
+
+### Utilities
+- `phidata` - Agent framework
+- `python-dotenv` - Environment management
+- `numpy` - Numerical computations
+- `tqdm` - Progress bars
+
+## Environment Setup
+
+1. Create a `.env` file in your project root:
 
 ```bash
-git clone https://github.com/yourusername/empire-chain.git
-cd empire-chain
-pip install -e .
+touch .env
 ```
 
-### 3. Development Installation
+2. Add your API keys (as needed):
 
-For development purposes, install with additional dependencies:
-
-```bash
-pip install -e ".[dev]"
+```env
+OPENAI_API_KEY=your_openai_key
+ANTHROPIC_API_KEY=your_anthropic_key
+GROQ_API_KEY=your_groq_key
 ```
 
 ## Verifying Installation
@@ -39,59 +72,15 @@ pip install -e ".[dev]"
 You can verify your installation by running:
 
 ```python
-import empire_chain
-print(empire_chain.__version__)
+from empire_chain.llms import OpenAILLM
+from empire_chain.vector_stores import QdrantVectorStore
+from empire_chain.embeddings import OpenAIEmbeddings
+
+# These imports should work without errors if installation is successful
 ```
 
-## Dependencies
+## Next Steps
 
-Empire Chain has the following core dependencies:
-
-- numpy
-- pandas
-- torch
-- transformers
-- streamlit
-- langchain
-- pillow
-- matplotlib
-
-These will be automatically installed when you install Empire Chain.
-
-## Optional Dependencies
-
-Some features require additional dependencies:
-
-### For PDF Processing
-```bash
-pip install "empire-chain[pdf]"
-```
-
-### For Image Processing
-```bash
-pip install "empire-chain[image]"
-```
-
-### For Development
-```bash
-pip install "empire-chain[dev]"
-```
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Version Conflicts**
-   ```bash
-   pip install --upgrade empire-chain
-   ```
-
-2. **Missing Dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **CUDA Issues**
-   Make sure you have compatible CUDA drivers installed if you plan to use GPU acceleration.
-
-If you encounter any issues, please check our [GitHub Issues](https://github.com/yourusername/empire-chain/issues) page or create a new issue. 
+- Check out the [Quick Start Guide](quickstart.md) to begin using Empire Chain
+- Explore [Example Cookbooks](../tutorials/empire-rag.md) for practical examples
+- Read about [Core Concepts](../user-guide/core-concepts.md) to understand the framework 

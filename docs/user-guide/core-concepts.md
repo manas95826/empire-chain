@@ -1,56 +1,192 @@
 # Core Concepts
 
-Empire Chain is built around several core concepts that work together to provide a powerful and flexible framework for AI applications.
+Empire Chain is built around several core concepts that work together to provide a comprehensive AI development framework.
+
+## Language Models (LLMs)
+
+Empire Chain supports multiple LLM providers through a unified interface:
+
+```python
+from empire_chain.llms import OpenAILLM, AnthropicLLM, GroqLLM
+
+# OpenAI
+openai_llm = OpenAILLM("gpt-4")
+
+# Anthropic
+anthropic_llm = AnthropicLLM("claude-3-sonnet")
+
+# Groq
+groq_llm = GroqLLM("mixtral-8x7b")
+```
+
+Each LLM implementation provides consistent methods:
+- `generate()`: Generate text based on a prompt
+- Error handling and retry logic
+- Streaming support where available
+
+## Vector Stores
+
+Vector stores are used for efficient similarity search and retrieval:
+
+```python
+from empire_chain.vector_stores import QdrantVectorStore, ChromaVectorStore
+
+# In-memory Qdrant store
+qdrant_store = QdrantVectorStore(":memory:")
+
+# Persistent ChromaDB store
+chroma_store = ChromaVectorStore()
+```
+
+Common operations:
+- `add()`: Add text and embeddings
+- `query()`: Retrieve similar documents
+- `delete()`: Remove documents
+- `clear()`: Reset the store
+
+## Embeddings
+
+Embeddings convert text into vector representations:
+
+```python
+from empire_chain.embeddings import OpenAIEmbeddings
+
+embeddings = OpenAIEmbeddings("text-embedding-3-small")
+vector = embeddings.embed("Your text here")
+```
+
+Features:
+- Batched processing
+- Caching support
+- Error handling
 
 ## Document Processing
 
-### The Docling Class
+The document processing system handles various file formats:
 
-The `Docling` class is the central component for document processing:
+```python
+from empire_chain.file_reader import DocumentReader
+
+reader = DocumentReader()
+text = reader.read("document.pdf")  # Supports PDF, DOCX, etc.
+```
+
+Capabilities:
+- PDF processing with PyPDF2
+- Word document processing with python-docx
+- Text extraction and cleaning
+- Metadata handling
+
+## Speech Processing
+
+Speech-to-Text capabilities are provided through various models:
+
+```python
+from empire_chain.stt import GroqSTT
+
+stt = GroqSTT()
+text = stt.transcribe("audio.mp3")
+```
+
+Features:
+- Audio file support
+- Real-time transcription
+- Multiple language support
+
+## Web Crawling
+
+Web content extraction is handled through crawl4ai:
+
+```python
+from empire_chain.crawl4ai import Crawler
+
+crawler = Crawler()
+data = crawler.crawl("https://example.com")
+```
+
+Capabilities:
+- HTML parsing
+- Content extraction
+- Rate limiting
+- Error handling
+
+## Data Visualization
+
+The visualization system provides tools for data analysis:
+
+```python
+from empire_chain.visualizer import DataAnalyzer, ChartFactory
+
+analyzer = DataAnalyzer()
+data = analyzer.analyze(your_data)
+chart = ChartFactory.create_chart('Bar Graph', data)
+```
+
+Chart types:
+- Bar graphs
+- Line charts
+- Scatter plots
+- Custom visualizations
+
+## Interactive Interfaces
+
+Streamlit-based interfaces for various applications:
+
+```python
+from empire_chain.streamlit import Chatbot, VisionChatbot, PDFChatbot
+
+# Text chatbot
+chatbot = Chatbot(llm=OpenAILLM("gpt-4"))
+
+# Vision chatbot
+vision_bot = VisionChatbot()
+
+# PDF chatbot
+pdf_bot = PDFChatbot(
+    llm=OpenAILLM("gpt-4"),
+    vector_store=QdrantVectorStore(":memory:")
+)
+```
+
+Features:
+- File upload
+- Interactive chat
+- Real-time responses
+- Error handling
+
+## PhiData Agents
+
+Specialized agents for specific tasks:
+
+```python
+from empire_chain.phidata_agents import PhiWebAgent, PhiFinanceAgent
+
+web_agent = PhiWebAgent()
+finance_agent = PhiFinanceAgent()
+```
+
+Capabilities:
+- Web search and analysis
+- Financial data processing
+- Task automation
+- Structured output
+
+## Document Analysis
+
+Advanced document analysis with Docling:
 
 ```python
 from empire_chain.docling import Docling
 
-doc = Docling("document.pdf")
+docling = Docling()
+analysis = docling.generate("Analyze this document")
 ```
 
-Key features:
-- Document loading and parsing
-- Text extraction and preprocessing
-- Metadata handling
-- Content transformation
-
-## Language Model Integration
-
-Empire Chain provides seamless integration with various Language Models:
-
-### Model Types
-1. **Local Models**: Run models directly on your machine
-2. **API-based Models**: Connect to services like OpenAI
-3. **Custom Models**: Integrate your own models
-
-### Configuration
-
-```python
-config = {
-    "model_type": "api",
-    "provider": "openai",
-    "model_name": "gpt-3.5-turbo",
-    "api_key": "your-api-key"
-}
-```
-
-## Data Structures
-
-### Document Store
-- Efficient storage and retrieval of documents
-- Indexing for quick searches
-- Version control and history
-
-### Vector Store
-- Embedding storage
-- Similarity search
-- Clustering capabilities
+Features:
+- Content analysis
+- Topic extraction
+- Summary generation
+- Key point identification
 
 ## Processing Pipeline
 

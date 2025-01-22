@@ -35,134 +35,139 @@
   </a>
 </p>
 
+## Features
+
+- 🤖 Multiple LLM Support (OpenAI, Anthropic, Groq)
+- 📚 Vector Store Integration (Qdrant, ChromaDB)
+- 🔍 Advanced Document Processing
+- 🎙️ Speech-to-Text Capabilities
+- 🌐 Web Crawling with crawl4ai
+- 📊 Data Visualization
+- 🎯 RAG Applications
+- 🤝 PhiData Agent Integration
+- 💬 Interactive Chatbots
+- 📝 Document Analysis with Docling
+
 ## Installation
 
 ```bash
-pip install empire_chain
+pip install empire-chain
 ```
 
-## Google Drive Authentication
+## Core Components
 
-```bash
+### Document Processing
+
+```python
 from empire_chain.file_reader import DocumentReader
 
 reader = DocumentReader()
-
-text = reader.read("your_drive_link/your_file_name")
-
-print(text)
+text = reader.read("your_file_path")  # Supports PDF, DOCX, and more
 ```
 
-## RAG Example
+### Speech-to-Text
 
 ```python
-from empire_chain.vector_stores import QdrantVectorStore
-from empire_chain.embeddings import OpenAIEmbeddings
-from empire_chain.llms import OpenAILLM
-from empire_chain.file_reader import DocumentReader
-import os
-from dotenv import load_dotenv
 from empire_chain.stt import GroqSTT
-def main():
-    load_dotenv()
-    
-    vector_store = QdrantVectorStore(":memory:")
-    embeddings = OpenAIEmbeddings("text-embedding-3-small")
-    llm = OpenAILLM("gpt-4o-mini")
-    reader = DocumentReader()
-    
-    file_path = "input.pdf"
-    text = reader.read(file_path)
-    
-    text_embedding = embeddings.embed(text)
-    vector_store.add(text, text_embedding)
-    
-    text_query = "What is the main topic of this document?"
-    audio_query = stt.transcribe("audio.mp3")
-    query_embedding = embeddings.embed(audio_query)
-    relevant_texts = vector_store.query(query_embedding, k=3)
-    
-    context = "\n".join(relevant_texts)
-    prompt = f"Based on the following context, {text_query}\n\nContext: {context}"
-    response = llm.generate(prompt)
-    print(f"Query: {text_query}")
-    print(f"Response: {response}")
 
-if __name__ == "__main__":
-    main()
+stt = GroqSTT()
+text = stt.transcribe("audio_file.mp3")
 ```
 
-# PhiData Agents
+### LLM Integration
 
 ```python
-from empire_chain.phidata_agents import PhiWebAgent, PhiFinanceAgent
-from dotenv import load_dotenv
+from empire_chain.llms import OpenAILLM, AnthropicLLM, GroqLLM
 
-load_dotenv()
-
-web_agent = PhiWebAgent()
-web_agent.generate("What is the recent news about Tesla with sources?")
-
-finance_agent = PhiFinanceAgent()
-finance_agent.generate("What is the price of Tesla?")
+openai_llm = OpenAILLM("gpt-4")
+anthropic_llm = AnthropicLLM("claude-3-sonnet")
+groq_llm = GroqLLM("mixtral-8x7b")
 ```
 
-## Simple Chatbot
+### Vector Stores
 
 ```python
-from empire_chain.streamlit import Chatbot
-from empire_chain.llms import OpenAILLM
-
-chatbot = Chatbot(llm=OpenAILLM("gpt-4o-mini"), title="Empire Chain Chatbot")
-chatbot.chat()
-```
-
-## Vision Chatbot
-
-```python
-from empire_chain.streamlit import VisionChatbot
-
-chatbot = VisionChatbot(title="Empire Chain Chatbot")
-chatbot.chat()
-```
-
-## PDF Chatbot
-
-```python
-from empire_chain.streamlit import PDFChatbot
-from empire_chain.llms import OpenAILLM
-from empire_chain.vector_stores import QdrantVectorStore
+from empire_chain.vector_stores import QdrantVectorStore, ChromaVectorStore
 from empire_chain.embeddings import OpenAIEmbeddings
 
-pdf_chatbot = PDFChatbot(title="PDF Chatbot", llm=OpenAILLM("gpt-4o-mini"), vector_store=QdrantVectorStore(":memory:"), embeddings=OpenAIEmbeddings("text-embedding-3-small"))
-pdf_chatbot.chat()
+vector_store = QdrantVectorStore(":memory:")
+embeddings = OpenAIEmbeddings("text-embedding-3-small")
 ```
 
-## Visualizer
+### Web Crawling
+
+```python
+from empire_chain.crawl4ai import Crawler
+
+crawler = Crawler()
+data = crawler.crawl("https://example.com")
+```
+
+### Data Visualization
 
 ```python
 from empire_chain.visualizer import DataAnalyzer, ChartFactory
 
-data = """
-Empire chain has secured a $100M Series A funding round from Sequoia Capital in 2024 and a $10M Series B funding round from Tiger Global in 2025.
-...
-"""
-
 analyzer = DataAnalyzer()
-analyzed_data = analyzer.analyze(data)
-
+analyzed_data = analyzer.analyze(your_data)
 chart = ChartFactory.create_chart('Bar Graph', analyzed_data)
 chart.show()
 ```
 
-## Docling
+### Interactive Chatbots
+
+```python
+from empire_chain.streamlit import Chatbot, VisionChatbot, PDFChatbot
+
+# Simple Chatbot
+chatbot = Chatbot(llm=OpenAILLM("gpt-4"), title="Empire Chain Chatbot")
+chatbot.chat()
+
+# Vision Chatbot
+vision_bot = VisionChatbot(title="Vision Assistant")
+vision_bot.chat()
+
+# PDF Chatbot
+pdf_bot = PDFChatbot(
+    title="PDF Assistant",
+    llm=OpenAILLM("gpt-4"),
+    vector_store=QdrantVectorStore(":memory:"),
+    embeddings=OpenAIEmbeddings("text-embedding-3-small")
+)
+pdf_bot.chat()
+```
+
+### PhiData Agents
+
+```python
+from empire_chain.phidata_agents import PhiWebAgent, PhiFinanceAgent
+
+web_agent = PhiWebAgent()
+finance_agent = PhiFinanceAgent()
+
+web_results = web_agent.generate("What are the latest AI developments?")
+finance_results = finance_agent.generate("Analyze TSLA stock performance")
+```
+
+### Document Analysis with Docling
 
 ```python
 from empire_chain.docling import Docling
 
 docling = Docling()
-docling.generate("What is the main topic of this document?")
+analysis = docling.generate("Analyze this document's key points")
 ```
+
+## Example Cookbooks
+
+Check out our cookbooks directory for complete examples:
+- RAG Applications (`cookbooks/empire_rag.py`)
+- Web Crawling (`cookbooks/crawler.py`)
+- Document Processing (`cookbooks/generalized_read_file.py`)
+- Topic to Podcast (`cookbooks/topic-to-podcast.py`)
+- Data Visualization (`cookbooks/visualize_data.py`)
+- Chatbot Examples (`cookbooks/simple_chatbot.py`, `cookbooks/chat_with_image.py`, `cookbooks/chat_with_pdf.py`)
+- PhiData Agent Usage (`cookbooks/phi_agents.py`)
 
 ## Contributing
 

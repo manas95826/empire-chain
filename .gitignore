@@ -12,7 +12,6 @@ token.pickle
 client_secret.json
 audio.mp3
 video.mp4
-*.md
 *.txt
 *.json
 *.yaml
