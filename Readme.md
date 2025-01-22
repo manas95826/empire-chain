@@ -163,3 +163,16 @@ from empire_chain.docling import Docling
 docling = Docling()
 docling.generate("What is the main topic of this document?")
 ```
+
+## Contributing
+
+```bash
+git clone https://github.com/manas95826/empire-chain.git
+cd empire-chain
+pip install -e .
+```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
