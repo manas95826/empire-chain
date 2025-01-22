@@ -1,4 +1,21 @@
-An orchestration framework for all your AI needs.
+# 🦜️🔗 EmpireChain
+
+⚡ An orchestration framework for all your AI needs ⚡
+
+<p align="center">
+  <a href="https://pypi.org/project/empire-chain/">
+    <img src="https://img.shields.io/pypi/v/empire-chain" alt="PyPI version">
+  </a>
+  <a href="https://pypi.org/project/empire-chain/">
+    <img src="https://img.shields.io/pypi/dm/empire-chain" alt="PyPI downloads">
+  </a>
+  <a href="https://github.com/manas95826/empire-chain/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License">
+  </a>
+  <a href="https://github.com/manas95826/empire-chain/stargazers">
+    <img src="https://img.shields.io/github/stars/manas95826/empire-chain" alt="GitHub stars">
+  </a>
+</p>
 
 ## Installation
 
@@ -122,24 +139,4 @@ chart.show()
 
 ## Docling
 
-```python
-from empire_chain.docling import Docling
-
-docling = Docling()
-
-converted_doc = docling.convert("https://arxiv.org/pdf/2408.09869")
-docling.save_markdown(converted_doc, "arxiv_2408.09869.md")
-```
-
-## Podcast
-
-```python
-from empire_chain.podcast import GeneratePodcast
-
-podcast=GeneratePodcast()
-podcast.generate(topic="About boom of meal plan and recipe generation apps")
-```
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+``
