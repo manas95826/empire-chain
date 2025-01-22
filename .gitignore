@@ -22,5 +22,4 @@ video.mp4
 *.log
 *.ini
 *.cfg
-*.conf
 *.env
