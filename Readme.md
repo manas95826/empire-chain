@@ -157,5 +157,9 @@ chart.show()
 
 ## Docling
 
-```
+```python
+from empire_chain.docling import Docling
+
+docling = Docling()
+docling.generate("What is the main topic of this document?")
 ```
