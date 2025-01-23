@@ -155,7 +155,7 @@ finance_results = finance_agent.generate("Analyze TSLA stock performance")
 from empire_chain.docling import Docling
 
 docling = Docling()
-analysis = docling.generate("Analyze this document's key points")
+analysis = docling.convert("input.pdf")
 ```
 
 ## Example Cookbooks
