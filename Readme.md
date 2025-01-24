@@ -47,6 +47,7 @@
 - 🤝 PhiData Agent Integration
 - 💬 Interactive Chatbots
 - 📝 Document Analysis with Docling
+- 🤖 Agentic Framework
 
 ## Installation
 
@@ -55,6 +56,29 @@ pip install empire-chain
 ```
 
 ## Core Components
+
+### Agent
+
+```python
+from empire_chain.agent import Agent
+from dotenv import load_dotenv
+
+load_dotenv()
+
+def get_weather(location: str) -> str:
+    """Simulated weather function"""
+    return f"The weather in {location} is sunny!"
+
+def calculate_distance(from_city: str, to_city: str) -> str:
+    """Simulated distance calculator"""
+    return f"The distance from {from_city} to {to_city} is 500km"
+
+agent = Agent()
+agent.register_function(get_weather)
+agent.register_function(calculate_distance)
+result = agent.process_query("What's the weather like in New York?")
+print(result)
+```
 
 ### Document Processing
 
