@@ -1,6 +1,7 @@
-from typing import Any, Callable, Dict, List
+from typing import Any, Callable, Dict, List, get_type_hints
 import json
 from datetime import datetime
+import inspect
 import requests
 from empire_chain.llms import GroqLLM
 
@@ -9,27 +10,60 @@ class FunctionRegistry:
         self.functions: Dict[str, Callable] = {}
         self.descriptions: Dict[str, Dict[str, Any]] = {}
     
-    def register(self, name: str, func: Callable, description: str, parameters: List[str]):
-        """Register a function with its metadata"""
-        self.functions[name] = func
-        self.descriptions[name] = {
-            "name": name,
+    def _extract_function_metadata(self, func: Callable) -> Dict[str, Any]:
+        """Extract function metadata using introspection"""
+        # Get function signature
+        sig = inspect.signature(func)
+        
+        # Get docstring and clean it
+        doc = inspect.getdoc(func) or "No description available"
+        description = doc.split("\n")[0]  # First line of docstring
+        
+        # Get parameter names and types
+        type_hints = get_type_hints(func)
+        parameters = []
+        for param_name, param in sig.parameters.items():
+            if param.default == inspect.Parameter.empty:
+                param_type = type_hints.get(param_name, Any).__name__
+                parameters.append({
+                    "name": param_name,
+                    "type": param_type,
+                    "required": True
+                })
+            else:
+                param_type = type_hints.get(param_name, Any).__name__
+                parameters.append({
+                    "name": param_name,
+                    "type": param_type,
+                    "required": False,
+                    "default": param.default
+                })
+        
+        return {
+            "name": func.__name__,
             "description": description,
-            "parameters": parameters
+            "parameters": parameters,
+            "full_docstring": doc
         }
+    
+    def register(self, func: Callable):
+        """Register a function with automatically extracted metadata"""
+        metadata = self._extract_function_metadata(func)
+        self.functions[metadata["name"]] = func
+        self.descriptions[metadata["name"]] = metadata
     
     def list_functions(self) -> List[str]:
         """List all registered function names"""
         return list(self.functions.keys())
 
 class Agent:
-    def __init__(self, model: str = "mixtral-8x7b-32768"):  
+    def __init__(self, model: str = "mixtral-8x7b-32768"):
         self.llm = GroqLLM(model=model)
         self.registry = FunctionRegistry()
         
-    def register_function(self, name: str, func: Callable, description: str, parameters: List[str]):
+    def register_function(self, func: Callable):
         """Register a function that the agent can call"""
-        self.registry.register(name, func, description, parameters)
+        self.registry.register(func)
     
     def _create_function_prompt(self, query: str) -> str:
         functions_json = json.dumps(self.registry.descriptions, indent=2)
@@ -37,13 +71,13 @@ class Agent:
 
 User Query: {query}
 
-Available Functions:
+Available Functions (with metadata):
 {functions_json}
 
 Instructions:
-1. Analyze the user query
-2. Select the most appropriate function from the available functions
-3. Extract parameter values from the query
+1. Analyze the user query and available functions
+2. Select the most appropriate function based on its description and parameters
+3. Extract parameter values from the query, respecting parameter types
 4. Return a JSON object in EXACTLY this format, with NO ADDITIONAL WHITESPACE or FORMATTING:
 {{"function":"<function_name>","parameters":{{"<param_name>":"<param_value>"}},"reasoning":"<one_line_explanation>"}}
 
@@ -54,6 +88,7 @@ Critical Rules:
 - ALL strings must use double quotes
 - Function name must be from available functions
 - ALL required parameters must be included
+- Parameter values must match the expected type
 - Reasoning must be brief and single-line
 
 Example Valid Response:
@@ -101,7 +136,13 @@ Response (SINGLE LINE JSON):"""
             
             if func_name not in self.registry.functions:
                 raise ValueError(f"Function {func_name} not found. Available functions: {', '.join(self.registry.list_functions())}")
-                
+            
+            # Validate parameter types
+            func_metadata = self.registry.descriptions[func_name]
+            for param in func_metadata["parameters"]:
+                if param["required"] and param["name"] not in parameters:
+                    raise ValueError(f"Missing required parameter: {param['name']}")
+            
             # Call the function with extracted parameters
             func = self.registry.functions[func_name]
             return {
