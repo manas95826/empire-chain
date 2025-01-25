@@ -1,5 +1,5 @@
 from empire_chain.streamlit import PDFChatbot
-from empire_chain.llms import OpenAILLM
+from empire_chain.llms.llms import OpenAILLM
 from empire_chain.vector_stores import QdrantVectorStore
 from empire_chain.embeddings import OpenAIEmbeddings
 

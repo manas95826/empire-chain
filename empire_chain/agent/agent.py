@@ -3,7 +3,7 @@ import json
 from datetime import datetime
 import inspect
 import requests
-from empire_chain.llms import GroqLLM
+from empire_chain.llms.llms import GroqLLM
 
 class FunctionRegistry:
     def __init__(self):
@@ -12,14 +12,11 @@ class FunctionRegistry:
     
     def _extract_function_metadata(self, func: Callable) -> Dict[str, Any]:
         """Extract function metadata using introspection"""
-        # Get function signature
         sig = inspect.signature(func)
         
-        # Get docstring and clean it
         doc = inspect.getdoc(func) or "No description available"
-        description = doc.split("\n")[0]  # First line of docstring
+        description = doc.split("\n")[0]
         
-        # Get parameter names and types
         type_hints = get_type_hints(func)
         parameters = []
         for param_name, param in sig.parameters.items():
@@ -98,7 +95,6 @@ Response (SINGLE LINE JSON):"""
 
     def _clean_json_response(self, response: str) -> str:
         """Clean and validate JSON response"""
-        # Remove any markdown formatting
         response = response.strip()
         if "```" in response:
             response = response.split("```")[1]
@@ -106,10 +102,8 @@ Response (SINGLE LINE JSON):"""
                 response = response[4:]
         response = response.strip()
         
-        # Remove any line breaks and normalize whitespace
         response = " ".join(response.split())
         
-        # Attempt to parse and re-serialize to ensure valid JSON
         try:
             parsed = json.loads(response)
             return json.dumps(parsed, separators=(',', ':'))
@@ -121,12 +115,10 @@ Response (SINGLE LINE JSON):"""
         if not self.registry.functions:
             raise ValueError("No functions registered with the agent")
             
-        # Get function and parameters from LLM
         prompt = self._create_function_prompt(query)
         response = self.llm.generate(prompt)
         
         try:
-            # Clean and validate JSON response
             cleaned_response = self._clean_json_response(response)
             result = json.loads(cleaned_response)
             
@@ -137,13 +129,11 @@ Response (SINGLE LINE JSON):"""
             if func_name not in self.registry.functions:
                 raise ValueError(f"Function {func_name} not found. Available functions: {', '.join(self.registry.list_functions())}")
             
-            # Validate parameter types
             func_metadata = self.registry.descriptions[func_name]
             for param in func_metadata["parameters"]:
                 if param["required"] and param["name"] not in parameters:
                     raise ValueError(f"Missing required parameter: {param['name']}")
             
-            # Call the function with extracted parameters
             func = self.registry.functions[func_name]
             return {
                 "result": func(**parameters),

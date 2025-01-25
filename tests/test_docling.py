@@ -1,4 +1,4 @@
-from empire_chain.docling import Docling
+from empire_chain.tools.docling import Docling
 import unittest
 
 class TestDocling(unittest.TestCase):

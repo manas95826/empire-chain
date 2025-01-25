@@ -1,5 +1,5 @@
 from datetime import datetime
-from empire_chain.agent import Agent
+from empire_chain.agent.agent import Agent
 from dotenv import load_dotenv
 
 load_dotenv()

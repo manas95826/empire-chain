@@ -1,4 +1,4 @@
-from empire_chain.llms import GroqLLM
+from empire_chain.llms.llms import GroqLLM
 import matplotlib.pyplot as plt
 import json
 from dotenv import load_dotenv

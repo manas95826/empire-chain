@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch, MagicMock
 import matplotlib.pyplot as plt
 import json
-from empire_chain.visualizer import (
+from empire_chain.cool_stuff.visualizer import (
     DataAnalyzer, ChartFactory, LineChart, PieChart, 
     BarGraph, ScatterChart, Histogram, BoxPlot
 )

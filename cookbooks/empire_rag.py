@@ -1,10 +1,10 @@
 from empire_chain.vector_stores import QdrantVectorStore
 from empire_chain.embeddings import OpenAIEmbeddings
-from empire_chain.llms import OpenAILLM
-from empire_chain.file_reader import DocumentReader
+from empire_chain.llms.llms import OpenAILLM
+from empire_chain.tools.file_reader import DocumentReader
 import os
 from dotenv import load_dotenv
-from empire_chain.stt import GroqSTT
+from empire_chain.stt.stt import GroqSTT
 
 def main():
     load_dotenv()

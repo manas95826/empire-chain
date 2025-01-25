@@ -1,4 +1,4 @@
-from empire_chain.visualizer import DataAnalyzer, ChartFactory
+from empire_chain.cool_stuff.visualizer import DataAnalyzer, ChartFactory
 
 data = """
  Geek Room, for the year ending [Insert Date]. The cash flow statement is divided into three sections: Operating Activities, Investing Activities, and Financing Activities.  

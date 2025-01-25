@@ -1,9 +1,9 @@
 import streamlit as st
 import tempfile
-from empire_chain.llms import OpenAILLM
+from empire_chain.llms.llms import OpenAILLM
 from empire_chain.vector_stores import QdrantVectorStore
 from empire_chain.embeddings import OpenAIEmbeddings
-from empire_chain.file_reader import DocumentReader
+from empire_chain.tools.file_reader import DocumentReader
 from dotenv import load_dotenv
 
 load_dotenv()

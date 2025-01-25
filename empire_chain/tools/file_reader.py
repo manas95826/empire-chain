@@ -66,7 +66,6 @@ class GoogleDocsReader(FileReader):
         if not 'drive.google.com' in file_path:
             raise ValueError("Not a valid Google Drive URL")
             
-        # Extract file ID
         if '/file/d/' in file_path:
             file_id = file_path.split('/file/d/')[1].split('/')[0]
         elif '/document/d/' in file_path:

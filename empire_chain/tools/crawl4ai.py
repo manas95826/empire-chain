@@ -30,6 +30,3 @@ class Crawler:
                 raise ValueError(f"Invalid format: {format}")
 
         return asyncio.run(_crawl())
-
-crawler = Crawler()
-print(crawler.crawl(url="https://www.geekroom.in", format="markdown"))

@@ -1,4 +1,4 @@
-from empire_chain.phidata_agents import PhiWebAgent, PhiFinanceAgent
+from empire_chain.phidata.phidata_agents import PhiWebAgent, PhiFinanceAgent
 from dotenv import load_dotenv
 
 load_dotenv()
