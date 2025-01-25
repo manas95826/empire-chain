@@ -1,20 +1,19 @@
-def Chatbot():
-    try:
-        from empire_chain.streamlit.base_chatbot import Chatbot as BaseChatbot
-        return BaseChatbot
-    except ImportError as e:
-        raise ImportError("Could not import Chatbot. Please install required dependencies: pip install openai") from e
+def Chatbot(*args, **kwargs):
+    from empire_chain.streamlit.base_chatbot import Chatbot as _Chatbot
+    return _Chatbot(*args, **kwargs)
 
-def VisionChatbot():
-    try:
-        from empire_chain.streamlit.vision_chatbot import VisionChatbot as VisionChatbotClass
-        return VisionChatbotClass
-    except ImportError as e:
-        raise ImportError("Could not import VisionChatbot. Please install required dependencies: pip install groq pillow") from e
+def VisionChatbot(*args, **kwargs):
+    from empire_chain.streamlit.vision_chatbot import VisionChatbot as _VisionChatbot
+    return _VisionChatbot(*args, **kwargs)
 
-def PDFChatbot():
+def PDFChatbot(*args, **kwargs):
     try:
-        from empire_chain.streamlit.pdf_chatbot import PDFChatbot as PDFChatbotClass
-        return PDFChatbotClass
-    except ImportError as e:
-        raise ImportError("Could not import PDFChatbot. Please install required dependencies: pip install chromadb qdrant-client") from e 
+        from empire_chain.streamlit.pdf_chatbot import PDFChatbot as _PDFChatbot
+    except ImportError:
+        raise ImportError(
+            "Could not import pdf_chatbot. Please install necessary dependencies with: "
+            "pip install chroma-db sentence-transformers"
+        )
+    return _PDFChatbot(*args, **kwargs)
+
+__all__ = ["Chatbot", "VisionChatbot", "PDFChatbot"]
