@@ -7,13 +7,7 @@ def VisionChatbot(*args, **kwargs):
     return _VisionChatbot(*args, **kwargs)
 
 def PDFChatbot(*args, **kwargs):
-    try:
-        from empire_chain.streamlit.pdf_chatbot import PDFChatbot as _PDFChatbot
-    except ImportError:
-        raise ImportError(
-            "Could not import pdf_chatbot. Please install necessary dependencies with: "
-            "pip install chroma-db sentence-transformers"
-        )
+    from empire_chain.streamlit.pdf_chatbot import PDFChatbot as _PDFChatbot
     return _PDFChatbot(*args, **kwargs)
 
 __all__ = ["Chatbot", "VisionChatbot", "PDFChatbot"]
