@@ -5,6 +5,7 @@ from io import BytesIO
 from PIL import Image
 from dotenv import load_dotenv
 
+# Only vision-specific imports above
 load_dotenv()
 
 class VisionChatbot:

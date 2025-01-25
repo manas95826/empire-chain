@@ -2,6 +2,7 @@ import streamlit as st
 from empire_chain.llms import OpenAILLM
 from dotenv import load_dotenv
 
+# Only base chatbot imports above
 load_dotenv()
 
 class Chatbot:
