@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "empire-chain"
-version = "0.3.9"
+version = "0.3.10"
 description = "An orchestration framework for all your AI needs"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -13,6 +13,7 @@ dependencies = [
     "anthropic",
     "groq",
     "python-dotenv",
+    "qdrant-client"
 ]
 
 [tool.setuptools.packages.find]

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="empire-chain",
-    version="0.3.9",    
+    version="0.3.10",    
     description="An orchestration framework for all your AI needs",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
@@ -15,6 +15,7 @@ setup(
         "anthropic",
         "groq",
         "python-dotenv",
+        "qdrant-client"
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
