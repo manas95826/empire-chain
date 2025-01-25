@@ -46,7 +46,6 @@
 - 🎯 RAG Applications
 - 🤝 PhiData Agent Integration
 - 💬 Interactive Chatbots
-- 📝 Document Analysis with Docling
 - 🤖 Agentic Framework
 
 ## Installation
@@ -173,15 +172,6 @@ web_results = web_agent.generate("What are the latest AI developments?")
 finance_results = finance_agent.generate("Analyze TSLA stock performance")
 ```
 
-### Document Analysis with Docling
-
-```python
-from empire_chain.docling import Docling
-
-docling = Docling()
-analysis = docling.convert("input.pdf")
-```
-
 ## Example Cookbooks
 
 Check out our cookbooks directory for complete examples:
@@ -204,4 +194,3 @@ pip install -e .
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
