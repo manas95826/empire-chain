@@ -163,13 +163,27 @@ pdf_bot.chat()
 ### PhiData Agents
 
 ```python
-from empire_chain.phidata_agents import PhiWebAgent, PhiFinanceAgent
+# cookbooks/phidata/web_agent.py
+"""
+This is a simple example of how to use the WebAgent class to generate web data.
+Please run the following command to install the necessary dependencies and store keys in .env:
+!pip install empire-chain phidata duckduckgo-search
+"""
+from empire_chain.phidata.web_agent import WebAgent
 
-web_agent = PhiWebAgent()
+web_agent = WebAgent()
+web_agent.generate("What is the price of Tesla?")
+
+# cookbooks/phidata/finance_agent.py
+"""
+This is a simple example of how to use the PhiFinanceAgent class to generate financial data.
+Please run the following command to install the necessary dependencies and store keys in .env:
+!pip install empire-chain phidata yfinance
+"""
+from empire_chain.phidata.finance_agent import PhiFinanceAgent
+
 finance_agent = PhiFinanceAgent()
-
-web_results = web_agent.generate("What are the latest AI developments?")
-finance_results = finance_agent.generate("Analyze TSLA stock performance")
+finance_agent.generate("What is the price of Tesla?")
 ```
 
 ## Example Cookbooks
@@ -179,33 +193,87 @@ Check out our cookbooks directory for complete examples:
 ### RAG Applications
 ```python
 # cookbooks/RAG/empire_rag.py
-from empire_chain.rag import RAGApplication
 from empire_chain.vector_stores import QdrantVectorStore
 from empire_chain.embeddings import OpenAIEmbeddings
+from empire_chain.llms.llms import GroqLLM
+from empire_chain.tools.file_reader import DocumentReader
+import os
+from dotenv import load_dotenv
+from empire_chain.stt.stt import GroqSTT
 
-# Initialize RAG components
-vector_store = QdrantVectorStore(":memory:")
-embeddings = OpenAIEmbeddings("text-embedding-3-small")
-rag = RAGApplication(vector_store=vector_store, embeddings=embeddings)
+def main(if_audio_input: bool = False):
+    load_dotenv()
+    
+    vector_store = QdrantVectorStore(":memory:")
+    embeddings = OpenAIEmbeddings("text-embedding-3-small")
+    llm = GroqLLM("llama3-8b-8192")
+    reader = DocumentReader()
+    
+    file_path = "input.pdf"
+    text = reader.read(file_path)
+    
+    text_embedding = embeddings.embed(text)
+    vector_store.add(text, text_embedding)
+    
+    text_query = "What is the main topic of this document?"
+    if if_audio_input:
+        stt = GroqSTT()
+        audio_query = stt.transcribe("audio.mp3")
+        query_embedding = embeddings.embed(audio_query)
+    else:
+        query_embedding = embeddings.embed(text_query)
+    relevant_texts = vector_store.query(query_embedding, k=3)
+    
+    context = "\n".join(relevant_texts)
+    prompt = f"Based on the following context, {text_query}\n\nContext: {context}"
+    response = llm.generate(prompt)
+    print(f"Query: {text_query}")
+    print(f"Response: {response}")
 
-# Process documents and query
-rag.add_documents("your_documents")
-response = rag.query("Your question about the documents")
+if __name__ == "__main__":
+    main(if_audio_input=False)
 ```
 
 ### Cool Stuff
 ```python
 # cookbooks/cool_stuff/topic-to-podcast.py
-from empire_chain.cool_stuff import PodcastGenerator
+"""
+This is a simple example of how to use the GeneratePodcast class to generate a podcast.
+Please run the following command to install the necessary dependencies and store keys in .env:
+!pip install empire-chain kokoro_onnx (It might take a while to download the model files)
+"""
+from empire_chain.cool_stuff.podcast import GeneratePodcast
 
-generator = PodcastGenerator()
-podcast = generator.create_podcast("AI and Machine Learning")
+podcast = GeneratePodcast()
+podcast.generate(topic="About boom of meal plan and recipe generation apps")
 
 # cookbooks/cool_stuff/visualize_data.py
-from empire_chain.visualizer import DataVisualizer
+"""
+This is a simple example of how to use the DataAnalyzer and ChartFactory classes to visualize data.
+Please run the following command to install the necessary dependencies and store keys in .env:
+!pip install empire-chain matplotlib
 
-visualizer = DataVisualizer()
-visualizer.create_visualization(data, chart_type="bar")
+_chart_types = {
+        'Line Chart': LineChart,
+        'Pie Chart': PieChart,
+        'Bar Graph': BarGraph,
+        'Scatter Plot': ScatterChart,
+        'Histogram': Histogram,
+        'Box Plot': BoxPlot
+    }
+Please adhere to the naming convention for the chart type.
+"""
+from empire_chain.cool_stuff.visualizer import DataAnalyzer, ChartFactory
+
+data = """
+Empire chain got a fund raise of $100M from a new investor in 2024 and $50M from a new investor in 2023.
+"""
+    
+analyzer = DataAnalyzer()
+analyzed_data = analyzer.analyze(data)
+        
+chart = ChartFactory.create_chart('Bar Chart', analyzed_data)
+chart.show()
 ```
 
 ### Tools
@@ -225,38 +293,32 @@ processed_text = processor.process("document.pdf")
 
 ### Chatbots
 ```python
-# cookbooks/chatbots/simple_chatbot.py
-from empire_chain.chatbots import SimpleChatbot
-
-chatbot = SimpleChatbot()
-response = chatbot.chat("Hello!")
-
 # cookbooks/chatbots/chat_with_pdf-qdrant.py
-from empire_chain.chatbots import PDFChatbot
+"""
+This is a simple chatbot that uses the Empire Chain library to create a pdf chatbot.
+Please run the following command to install the necessary dependencies and store keys in .env:
+!pip install empire-chain streamlit
+!streamlit run app.py
+"""
+from empire_chain.streamlit import PDFChatbot
+from empire_chain.llms.llms import OpenAILLM
+from empire_chain.vector_stores import QdrantVectorStore
+from empire_chain.embeddings import OpenAIEmbeddings
 
-pdf_bot = PDFChatbot(vector_store="qdrant")
-response = pdf_bot.chat_with_pdf("your_file.pdf", "Your question?")
+pdf_chatbot = PDFChatbot(title="PDF Chatbot", llm=OpenAILLM("gpt-4o-mini"), vector_store=QdrantVectorStore(":memory:"), embeddings=OpenAIEmbeddings("text-embedding-3-small"))
+pdf_chatbot.chat()
 
 # cookbooks/chatbots/chat_with_image.py
-from empire_chain.chatbots import ImageChatbot
+"""
+This is a simple chatbot that uses the Empire Chain library to create a chatbot.
+Please run the following command to install the necessary dependencies and groq key in .env (https://console.groq.com/keys):
+!pip install empire-chain streamlit
+!streamlit run app.py
+"""
+from empire_chain.streamlit import VisionChatbot
 
-image_bot = ImageChatbot()
-response = image_bot.analyze_image("image.jpg", "What's in this image?")
-```
-
-### PhiData Agents
-```python
-# cookbooks/phidata/web_agent.py
-from empire_chain.phidata import WebAgent
-
-web_agent = WebAgent()
-results = web_agent.search("Latest AI news")
-
-# cookbooks/phidata/finance_agent.py
-from empire_chain.phidata import FinanceAgent
-
-finance_agent = FinanceAgent()
-analysis = finance_agent.analyze_stock("AAPL")
+chatbot = VisionChatbot(title="Empire Chatbot")
+chatbot.chat()
 ```
 
 ## Contributing
