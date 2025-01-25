@@ -1,3 +1,8 @@
+"""
+This is a simple example of how to use the Empire Agent.
+Please run the following command to install the necessary dependencies and store keys in .env:
+!pip install empire-chain
+"""
 from datetime import datetime
 from empire_chain.agent.agent import Agent
 from dotenv import load_dotenv

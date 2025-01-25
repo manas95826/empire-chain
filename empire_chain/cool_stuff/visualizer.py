@@ -132,8 +132,19 @@ class PieChart(BaseChart):
         if not self._validate_data():
             return None
         
+        required_fields = ['title', 'datapoints']
+        for field in required_fields:
+            if field not in self.data:
+                raise ValueError(f"Missing required field '{field}' in data")
+        
+        if not isinstance(self.data['datapoints'], dict):
+            raise ValueError("Pie chart requires dictionary-format datapoints")
+        
         categories = list(self.data['datapoints'].keys())
         values = list(self.data['datapoints'].values())
+        
+        if any(v < 0 for v in values):
+            raise ValueError("Pie chart cannot display negative values. Please use a different chart type for negative data.")
         
         self.ax.pie(values, labels=categories, autopct='%1.1f%%')
         self.ax.set_title(self.data['title'])
@@ -212,6 +223,7 @@ class ChartFactory:
     @classmethod
     def create_chart(cls, chart_type: str, data_json: Union[str, Dict], fig_ax: Optional[Tuple[plt.Figure, plt.Axes]] = None) -> Optional[BaseChart]:
         chart_class = cls._chart_types.get(chart_type)
-        if chart_class:
-            return chart_class(data_json, fig_ax)
-        return None
+        if not chart_class:
+            available_types = "', '".join(cls._chart_types.keys())
+            raise ValueError(f"Invalid chart type '{chart_type}'. Available types are: '{available_types}'")
+        return chart_class(data_json, fig_ax)

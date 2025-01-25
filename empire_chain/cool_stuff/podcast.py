@@ -88,11 +88,30 @@ class GeneratePodcast:
         silence = np.zeros(int(silence_duration * sample_rate))
         return silence
     
+    def _clean_json_response(self, response: str) -> str:
+        """Clean and validate JSON response"""
+        response = response.strip()
+        if "```" in response:
+            response = response.split("```")[1]
+            if response.startswith("json"):
+                response = response[4:]
+        response = response.strip()
+        
+        response = " ".join(response.split())
+        
+        try:
+            parsed = json.loads(response)
+            return json.dumps(parsed, separators=(',', ':'))
+        except json.JSONDecodeError:
+            raise ValueError(f"Invalid JSON response: {response[:100]}...")
+
     def generate(self, topic: str):
         kokoro = Kokoro("kokoro-v0_19.onnx", "voices.json")
         audio = []
         completion = self.client(topic)
-        sentences = json.loads(completion.choices[0].message.content)
+        response_content = completion.choices[0].message.content
+        cleaned_json = self._clean_json_response(response_content)
+        sentences = json.loads(cleaned_json)
 
         with tqdm(total=len(sentences), desc="Generating Audio", unit="sentence") as pbar:
             for sentence in sentences:
