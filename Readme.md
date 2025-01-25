@@ -54,145 +54,78 @@
 pip install empire-chain
 ```
 
-## Core Components
+# Empire Chain Components
 
-### Agent
+## Empire Agent
 
 ```python
-from empire_chain.agent import Agent
+"""
+This is a simple example of how to use the Empire Agent.
+Please run the following command to install the necessary dependencies and store keys in .env:
+!pip install empire-chain
+"""
+from datetime import datetime
+from empire_chain.agent.agent import Agent
 from dotenv import load_dotenv
 
 load_dotenv()
 
 def get_weather(location: str) -> str:
-    """Simulated weather function"""
     return f"The weather in {location} is sunny!"
 
 def calculate_distance(from_city: str, to_city: str) -> str:
-    """Simulated distance calculator"""
     return f"The distance from {from_city} to {to_city} is 500km"
 
-agent = Agent()
-agent.register_function(get_weather)
-agent.register_function(calculate_distance)
-result = agent.process_query("What's the weather like in New York?")
-print(result)
+def get_time(timezone: str) -> str:
+    return f"Current time in {timezone}: {datetime.now()}"
+
+def translate_text(text: str, target_language: str) -> str:
+    return f"Translated '{text}' to {target_language}: [translation would go here]"
+
+def search_web(query: str, num_results: int) -> str:
+    return f"Top {num_results} results for '{query}': [search results would go here]"
+
+def main():
+    # Create agent
+    agent = Agent()
+    
+    # Register functions
+    functions = [
+        get_weather,
+        calculate_distance,
+        get_time,
+        translate_text,
+        search_web
+    ]
+    
+    for func in functions:
+        agent.register_function(func)
+    
+    # Example queries
+    queries = [
+        "What's the weather like in Tokyo?",
+        "How far is London from Paris?",
+        "What time is it in EST timezone?",
+        "Translate 'Hello World' to Spanish",
+        "Search for latest news about AI and show 3 results"
+    ]
+    
+    # Process queries
+    for query in queries:
+        try:
+            result = agent.process_query(query)
+            print(f"\nQuery: {query}")
+            print(f"Result: {result['result']}")
+        except Exception as e:
+            print(f"Error processing query '{query}': {str(e)}")
+
+if __name__ == "__main__":
+    main()
 ```
 
-### Document Processing
+## RAG
 
 ```python
-from empire_chain.file_reader import DocumentReader
-
-reader = DocumentReader()
-text = reader.read("your_file_path")  # Supports PDF, DOCX, and more
-```
-
-### Speech-to-Text
-
-```python
-from empire_chain.stt import GroqSTT
-
-stt = GroqSTT()
-text = stt.transcribe("audio_file.mp3")
-```
-
-### LLM Integration
-
-```python
-from empire_chain.llms import OpenAILLM, AnthropicLLM, GroqLLM
-
-openai_llm = OpenAILLM("gpt-4")
-anthropic_llm = AnthropicLLM("claude-3-sonnet")
-groq_llm = GroqLLM("mixtral-8x7b")
-```
-
-### Vector Stores
-
-```python
-from empire_chain.vector_stores import QdrantVectorStore, ChromaVectorStore
-from empire_chain.embeddings import OpenAIEmbeddings
-
-vector_store = QdrantVectorStore(":memory:")
-embeddings = OpenAIEmbeddings("text-embedding-3-small")
-```
-
-### Web Crawling
-
-```python
-from empire_chain.crawl4ai import Crawler
-
-crawler = Crawler()
-data = crawler.crawl("https://example.com")
-```
-
-### Data Visualization
-
-```python
-from empire_chain.visualizer import DataAnalyzer, ChartFactory
-
-analyzer = DataAnalyzer()
-analyzed_data = analyzer.analyze(your_data)
-chart = ChartFactory.create_chart('Bar Graph', analyzed_data)
-chart.show()
-```
-
-### Interactive Chatbots
-
-```python
-from empire_chain.streamlit import Chatbot, VisionChatbot, PDFChatbot
-
-# Simple Chatbot
-chatbot = Chatbot(llm=OpenAILLM("gpt-4"), title="Empire Chain Chatbot")
-chatbot.chat()
-
-# Vision Chatbot
-vision_bot = VisionChatbot(title="Vision Assistant")
-vision_bot.chat()
-
-# PDF Chatbot
-pdf_bot = PDFChatbot(
-    title="PDF Assistant",
-    llm=OpenAILLM("gpt-4"),
-    vector_store=QdrantVectorStore(":memory:"),
-    embeddings=OpenAIEmbeddings("text-embedding-3-small")
-)
-pdf_bot.chat()
-```
-
-### PhiData Agents
-
-```python
-# cookbooks/phidata/web_agent.py
-"""
-This is a simple example of how to use the WebAgent class to generate web data.
-Please run the following command to install the necessary dependencies and store keys in .env:
-!pip install empire-chain phidata duckduckgo-search
-"""
-from empire_chain.phidata.web_agent import WebAgent
-
-web_agent = WebAgent()
-web_agent.generate("What is the price of Tesla?")
-
-# cookbooks/phidata/finance_agent.py
-"""
-This is a simple example of how to use the PhiFinanceAgent class to generate financial data.
-Please run the following command to install the necessary dependencies and store keys in .env:
-!pip install empire-chain phidata yfinance
-"""
-from empire_chain.phidata.finance_agent import PhiFinanceAgent
-
-finance_agent = PhiFinanceAgent()
-finance_agent.generate("What is the price of Tesla?")
-```
-
-## Example Cookbooks
-
-Check out our cookbooks directory for complete examples:
-
-### RAG Applications
-```python
-# cookbooks/RAG/empire_rag.py
 from empire_chain.vector_stores import QdrantVectorStore
 from empire_chain.embeddings import OpenAIEmbeddings
 from empire_chain.llms.llms import GroqLLM
@@ -234,20 +167,152 @@ if __name__ == "__main__":
     main(if_audio_input=False)
 ```
 
-### Cool Stuff
+## Chatbots
+
+### Simple Chatbot
+
 ```python
-# cookbooks/cool_stuff/topic-to-podcast.py
 """
-This is a simple example of how to use the GeneratePodcast class to generate a podcast.
+This is a simple chatbot that uses the Empire Chain library to create a chatbot.
 Please run the following command to install the necessary dependencies and store keys in .env:
-!pip install empire-chain kokoro_onnx (It might take a while to download the model files)
+!pip install empire-chain streamlit
+!streamlit run app.py
 """
-from empire_chain.cool_stuff.podcast import GeneratePodcast
+from empire_chain.streamlit import Chatbot
+from empire_chain.llms.llms import OpenAILLM
 
-podcast = GeneratePodcast()
-podcast.generate(topic="About boom of meal plan and recipe generation apps")
+chatbot = Chatbot(title="Empire Chatbot", llm=OpenAILLM("gpt-4o-mini"))
+chatbot.chat()
+```
 
-# cookbooks/cool_stuff/visualize_data.py
+### Chat with Image
+
+```python
+"""
+This is a simple chatbot that uses the Empire Chain library to create a chatbot.
+Please run the following command to install the necessary dependencies and groq key in .env (https://console.groq.com/keys):
+!pip install empire-chain streamlit
+!streamlit run app.py
+"""
+from empire_chain.streamlit import VisionChatbot
+
+chatbot = VisionChatbot(title="Empire Chatbot")
+chatbot.chat()
+```
+
+### Chat with PDF
+
+```python
+"""
+This is a simple chatbot that uses the Empire Chain library to create a pdf chatbot.
+Please run the following command to install the necessary dependencies and store keys in .env:
+!pip install empire-chain streamlit
+!streamlit run app.py
+"""
+from empire_chain.streamlit import PDFChatbot
+from empire_chain.llms.llms import OpenAILLM
+from empire_chain.vector_stores import QdrantVectorStore
+from empire_chain.embeddings import OpenAIEmbeddings
+
+pdf_chatbot = PDFChatbot(title="PDF Chatbot", llm=OpenAILLM("gpt-4o-mini"), vector_store=QdrantVectorStore(":memory:"), embeddings=OpenAIEmbeddings("text-embedding-3-small"))
+pdf_chatbot.chat()
+```
+
+## PhiData Agents
+
+### Web Agent
+
+```python
+"""
+This is a simple example of how to use the WebAgent class to generate web data.
+Please run the following command to install the necessary dependencies and store keys in .env:
+!pip install empire-chain phidata duckduckgo-search
+"""
+from empire_chain.phidata.web_agent import WebAgent
+
+web_agent = WebAgent()
+
+web_agent.generate("What is the price of Tesla?")
+```
+
+### Finance Agent
+
+```python
+"""
+This is a simple example of how to use the PhiFinanceAgent class to generate financial data.
+Please run the following command to install the necessary dependencies and store keys in .env:
+!pip install empire-chain phidata yfinance
+"""
+from empire_chain.phidata.finance_agent import PhiFinanceAgent
+
+finance_agent = PhiFinanceAgent()
+
+finance_agent.generate("Analyze TSLA stock performance")
+```
+
+## Tools
+
+### File Reader
+
+```python
+"""
+This is a simple file reader that uses the Empire Chain library to read a file.
+It supports 
+1. PDF files (.pdf)
+2. Microsoft Word documents (.docx)
+3. Text files (.txt)
+4. JSON files (.json)
+5. CSV files (.csv)
+6. Google Drive files (.gdrive)
+"""
+from empire_chain.tools.file_reader import DocumentReader
+reader = DocumentReader()
+
+text = reader.read("https://drive.google.com/file/d/1t0Itw6oGO2iVusp=sharing")
+print(text)
+
+text = reader.read("input.pdf")
+print(text)
+```
+
+### Website Crawler
+
+```python
+"""
+This is a simple crawler that uses the Empire Chain library to crawl a website and save the content as markdown.
+Please run the following command to install the necessary dependencies and store keys in .env:
+!pip install empire-chain crawl4ai
+"""
+from empire_chain.tools.crawl4ai import Crawler
+
+crawler = Crawler()
+result = crawler.crawl(url="https://www.geekroom.in", format="markdown")
+print(result)
+```
+
+### Speech to Text
+
+```python
+from empire_chain.stt.stt import GroqSTT
+from empire_chain.stt.stt import HuggingFaceSTT
+from dotenv import load_dotenv
+import os
+load_dotenv()
+
+stt = GroqSTT()
+text = stt.transcribe("audio.mp3")
+print(text)
+
+stt = HuggingFaceSTT()
+text = stt.transcribe("audio.mp3")
+print(text)
+```
+
+## Cool Stuff
+
+### Visualize Data
+
+```python
 """
 This is a simple example of how to use the DataAnalyzer and ChartFactory classes to visualize data.
 Please run the following command to install the necessary dependencies and store keys in .env:
@@ -276,49 +341,18 @@ chart = ChartFactory.create_chart('Bar Chart', analyzed_data)
 chart.show()
 ```
 
-### Tools
+### Text to Podcast
+
 ```python
-# cookbooks/tools/crawler.py
-from empire_chain.tools import WebCrawler
-
-crawler = WebCrawler()
-data = crawler.crawl("https://example.com")
-
-# cookbooks/tools/docling_md.py
-from empire_chain.tools import DocumentProcessor
-
-processor = DocumentProcessor()
-processed_text = processor.process("document.pdf")
-```
-
-### Chatbots
-```python
-# cookbooks/chatbots/chat_with_pdf-qdrant.py
 """
-This is a simple chatbot that uses the Empire Chain library to create a pdf chatbot.
+This is a simple example of how to use the GeneratePodcast class to generate a podcast.
 Please run the following command to install the necessary dependencies and store keys in .env:
-!pip install empire-chain streamlit
-!streamlit run app.py
+!pip install empire-chain kokoro_onnx (It might take a while to download the model files)
 """
-from empire_chain.streamlit import PDFChatbot
-from empire_chain.llms.llms import OpenAILLM
-from empire_chain.vector_stores import QdrantVectorStore
-from empire_chain.embeddings import OpenAIEmbeddings
+from empire_chain.cool_stuff.podcast import GeneratePodcast
 
-pdf_chatbot = PDFChatbot(title="PDF Chatbot", llm=OpenAILLM("gpt-4o-mini"), vector_store=QdrantVectorStore(":memory:"), embeddings=OpenAIEmbeddings("text-embedding-3-small"))
-pdf_chatbot.chat()
-
-# cookbooks/chatbots/chat_with_image.py
-"""
-This is a simple chatbot that uses the Empire Chain library to create a chatbot.
-Please run the following command to install the necessary dependencies and groq key in .env (https://console.groq.com/keys):
-!pip install empire-chain streamlit
-!streamlit run app.py
-"""
-from empire_chain.streamlit import VisionChatbot
-
-chatbot = VisionChatbot(title="Empire Chatbot")
-chatbot.chat()
+podcast=GeneratePodcast()
+podcast.generate(topic="About boom of meal plan and recipe generation apps")
 ```
 
 ## Contributing
