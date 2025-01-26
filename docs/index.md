@@ -1,6 +1,27 @@
-# Empire Chain Documentation
+# ⚔️🔗 EmpireChain
 
-Welcome to Empire Chain, a powerful framework for building AI-powered data processing pipelines and applications.
+⚡ An orchestration framework for all your AI needs ⚡
+
+## Features
+
+- 🤖 Multiple LLM Support (OpenAI, Anthropic, Groq)
+- 📚 Vector Store Integration (Qdrant, ChromaDB)
+- 🔍 Advanced Document Processing
+- 🎙️ Speech-to-Text Capabilities
+- 🌐 Web Crawling with crawl4ai
+- 📊 Data Visualization
+- 🎯 RAG Applications
+- 🤝 PhiData Agent Integration
+- 💬 Interactive Chatbots
+- 🤖 Agentic Framework
+
+## Installation
+
+```bash
+pip install empire-chain
+```
+
+For detailed information about each component, please check out the respective sections in the documentation.
 
 ## Overview
 

@@ -1,13 +1,7 @@
 site_name: Empire Chain
-site_description: Documentation for Empire Chain - A powerful data processing and AI chain framework
-repo_url: https://github.com/manas95826/empire-chain
+site_description: An orchestration framework for all your AI needs
 theme:
   name: material
-  features:
-    - navigation.tabs
-    - navigation.sections
-    - navigation.expand
-    - search.highlight
   palette:
     - scheme: default
       primary: indigo
@@ -21,31 +15,44 @@ theme:
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+
+plugins:
+  - search
+  - mermaid2
 
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - admonition
   - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
   - attr_list
   - md_in_html
 
 nav:
   - Home: index.md
-  - Getting Started:
-      - Installation: getting-started/installation.md
-      - Quick Start: getting-started/quickstart.md
-  - User Guide:
-      - Core Concepts: user-guide/core-concepts.md
-      - Document Processing: user-guide/document-processing.md
-      - LLM Integration: user-guide/llm-integration.md
-      - Visualization: user-guide/visualization.md
-  - Tutorials:
-      - Simple Chatbot: tutorials/simple-chatbot.md
-      - Chat with PDF: tutorials/chat-with-pdf.md
-      - Chat with Images: tutorials/chat-with-images.md
-      - Empire RAG: tutorials/empire-rag.md
-  - Contributing: contributing.md 
+  - Components:
+    - Empire Agent: components/empire_agent.md
+    - RAG: components/rag.md
+    - Chatbots: components/chatbots.md
+    - PhiData Agents: components/phidata_agents.md
+    - Tools: components/tools.md
+    - Cool Stuff: components/cool_stuff.md
+  - Contributing: contributing.md
+  - License: license.md 
