@@ -24,8 +24,8 @@
   <a href="https://pypi.org/project/empire-chain/">
     <img src="https://img.shields.io/pypi/v/empire-chain" alt="PyPI version">
   </a>
-  <a href="https://pypi.org/project/empire-chain/">
-    <img src="https://img.shields.io/pypi/dm/empire-chain" alt="PyPI downloads">
+  <a href="https://pepy.tech/project/empire-chain">
+    <img src="https://static.pepy.tech/badge/empire-chain" alt="PyPI downloads">
   </a>
   <a href="https://github.com/manas95826/empire-chain/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License">
