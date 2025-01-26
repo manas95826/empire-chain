@@ -124,6 +124,7 @@ Return only a JSON array of conversation turns, like:
             raise ValueError(f"Invalid JSON response: {response[:100]}...")
 
     def generate(self, topic: str):
+        self.download_required_files()  # Download required files first
         kokoro = Kokoro("kokoro-v0_19.onnx", "voices.json")
         audio = []
         completion = self.client(topic)
