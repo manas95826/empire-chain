@@ -55,30 +55,47 @@ class GeneratePodcast:
             messages=[
                 {
                     "role": "system",
-                    "content": """You are a podcast scriptwriter. You'll be giving the sentences for a podcast related to a particular topic. Generate as many sentences as you can. User will provide the topic. 
-                    Available voices are af, af_bella, af_sarah, af_sky, am_adam, am_michael, bf_emma, bf_isabella, bm_george, bm_lewis
-                    You shouldn't return anything else, just the array of json objects.
+                    "content": """You are a podcast scriptwriter for an engaging multi-host podcast show. Create a natural, flowing conversation between 2-3 hosts discussing the given topic. Follow these guidelines:
 
-                    Example output:
-                    [
-                        {
-                            "voice": "sarah",
-                            "text": "Hello and welcome to the podcast! We've got some exciting things lined up today."
-                        },
-                        {
-                            "voice": "michael",
-                            "text": "It's going to be an exciting episode. Stick with us!"
-                        },
-                        ...etc
-                    ]
-                    """
+1. Structure:
+   - Start with a warm welcome and topic introduction
+   - Have a structured discussion with clear segments
+   - End with a conclusion and sign-off
+
+2. Host Personalities (use these consistently):
+   - af_sarah: The main host/moderator who guides the conversation
+   - am_michael: The expert/analyst who provides deep insights
+   - af_bella: The engaging co-host who asks good questions (optional)
+
+3. Make the conversation natural by:
+   - Including casual reactions ("That's fascinating!", "I agree", etc.)
+   - Having hosts build on each other's points
+   - Including brief personal anecdotes
+   - Using conversational language, not formal speech
+
+4. Keep each speaking turn relatively brief (1-3 sentences) to maintain flow.
+
+Available voices: af, af_bella, af_sarah, af_sky, am_adam, am_michael, bf_emma, bf_isabella, bm_george, bm_lewis
+
+Return only a JSON array of conversation turns, like:
+[
+    {
+        "voice": "af_sarah",
+        "text": "Welcome to The Deep Dive! Today we're exploring [topic], and I'm thrilled to discuss this with our experts."
+    },
+    {
+        "voice": "am_michael",
+        "text": "Thanks Sarah! This is such an interesting topic, and I've actually been researching it recently."
+    },
+    ...
+]"""
                 },
                 {
                     "role": "user",
                     "content": f"My topic is '{topic}'."
                 }
             ],
-            temperature=0.3,
+            temperature=0.5,
             max_completion_tokens=8000,
         )
         return completion
@@ -91,13 +108,14 @@ class GeneratePodcast:
     def _clean_json_response(self, response: str) -> str:
         """Clean and validate JSON response"""
         response = response.strip()
-        if "```" in response:
-            response = response.split("```")[1]
-            if response.startswith("json"):
-                response = response[4:]
-        response = response.strip()
         
-        response = " ".join(response.split())
+        # Try to extract content between square brackets
+        try:
+            start_idx = response.index('[')
+            end_idx = response.rindex(']') + 1
+            response = response[start_idx:end_idx]
+        except ValueError:
+            raise ValueError(f"Could not find JSON array in response: {response[:100]}...")
         
         try:
             parsed = json.loads(response)
