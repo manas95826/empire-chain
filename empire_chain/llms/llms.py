@@ -1,6 +1,7 @@
 from openai import OpenAI
 from anthropic import Anthropic
 from groq import Groq
+import google.generativeai as genai
 import os
 from dotenv import load_dotenv
 
@@ -55,4 +56,24 @@ class GroqLLM(LLM):
             ]
         )
         return response.choices[0].message.content
+
+
+class GeminiLLM(LLM):
+    def __init__(self, model: str = "gemini-1.5-flash", custom_instructions: str = None):
+        if not custom_instructions:
+            custom_instructions = "You are a helpful assistant."
+        super().__init__(model, custom_instructions)
+        self.client = genai
+        self.client.configure(api_key=os.getenv("GEMINI_API_KEY"))
+
+    def generate(self, prompt: str) -> str:
+        instructions = self.custom_instructions
+        
+        model = self.client.GenerativeModel(
+            model_name=self.model,
+            system_instruction=instructions
+        )
+        
+        response = model.generate_content(prompt)
+        return response.text
     

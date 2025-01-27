@@ -17,7 +17,8 @@ dependencies = [
     "requests",
     "PyPDF2",
     "python-docx",
-    "soundfile"
+    "soundfile",
+    "google-generativeai"  # Added the missing package
 ]
 
 [tool.setuptools.packages.find]
