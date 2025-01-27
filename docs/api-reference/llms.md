@@ -127,6 +127,47 @@ llm = GroqLLM("mixtral-8x7b")
 response = llm.generate("Write a poem about AI")
 ```
 
+## GeminiLLM
+
+```python
+from empire_chain.llms import GeminiLLM
+```
+
+Class for interacting with Google's Gemini language models.
+
+### Constructor
+
+```python
+GeminiLLM(model_name: str = "gemini-1.5-flash")
+```
+
+**Parameters:**
+- `model_name` (str): The Gemini model to use. Options include:
+  - `"gemini-1.5-flash"`
+  - `"gemini-1.5-pro"`
+
+### Methods
+
+#### generate()
+
+```python
+def generate(self, prompt: str) -> str
+```
+
+Generate text using Gemini.
+
+**Parameters:**
+- `prompt` (str): The input prompt for text generation
+
+**Returns:**
+- str: The generated text response
+
+**Example:**
+```python
+llm = GeminiLLM("gemini-1.5-flash")
+response = llm.generate("Who Lionel Messi?")
+``` 
+
 ## Common Features
 
 All LLM classes share these common features:
@@ -147,6 +188,7 @@ Required environment variables:
 - OpenAI: `OPENAI_API_KEY`
 - Anthropic: `ANTHROPIC_API_KEY`
 - Groq: `GROQ_API_KEY`
+- Gemini: `GEMINI_API_KEY`
 
 ### Best Practices
 
@@ -155,11 +197,14 @@ Required environment variables:
    # For complex reasoning
    llm = OpenAILLM("gpt-4")
    
-   # For longer context
+   # For coding related tasks
    llm = AnthropicLLM("claude-3-opus")
    
    # For faster responses
    llm = GroqLLM("mixtral-8x7b")
+
+   # For longer context
+   llm = GeminiLLM("gemini-1.5-flash")
    ```
 
 2. **Error Handling**
