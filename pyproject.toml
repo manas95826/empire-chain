@@ -17,8 +17,7 @@ dependencies = [
     "requests",
     "PyPDF2",
     "python-docx",
-    "soundfile",
-    "google-generativeai"  
+    "soundfile"
 ]
 
 [tool.setuptools.packages.find]

@@ -19,8 +19,7 @@ setup(
         "PyPDF2",
         "python-docx",
         "qdrant-client",
-        "soundfile",
-        "google-generativeai"  
+        "soundfile"
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

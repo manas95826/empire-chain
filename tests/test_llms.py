@@ -34,7 +34,7 @@ class TestLLMs(unittest.TestCase):
         print(response)
     
     def test_gemini_llm(self):
-        llm = GeminiLLM("gemini-1.5-flash")
+        llm = GeminiLLM("gemini-1.5-pro")
         response = llm.generate("What is the capital of France?")
         print(response)
  

@@ -165,7 +165,7 @@ Generate text using Gemini.
 **Example:**
 ```python
 llm = GeminiLLM("gemini-1.5-flash")
-response = llm.generate("Who Lionel Messi?")
+response = llm.generate("Who is Lionel Messi?")
 ``` 
 
 ## Common Features
