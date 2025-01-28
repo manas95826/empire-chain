@@ -55,4 +55,24 @@ class GroqLLM(LLM):
             ]
         )
         return response.choices[0].message.content
+
+
+class GeminiLLM(LLM):
+    def __init__(self, model: str = "gemini-1.5-flash", custom_instructions: str = ""):
+        super().__init__(model, custom_instructions)
+        self.client = OpenAI(
+            api_key=os.getenv("GEMINI_API_KEY"),
+            base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
+        )
+
+    def generate(self, prompt: str) -> str:
+        response = self.client.chat.completions.create(
+            model=self.model,
+            n=1,
+            messages=[
+                {"role": "system", "content": self.custom_instructions},
+                {"role": "user", "content": prompt}
+            ]
+        )
+        return response.choices[0].message.content
     

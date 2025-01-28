@@ -1,4 +1,4 @@
-from empire_chain.llms.llms import OpenAILLM, AnthropicLLM, GroqLLM
+from empire_chain.llms.llms import OpenAILLM, AnthropicLLM, GroqLLM, GeminiLLM
 import unittest
 import os
 from unittest.mock import patch
@@ -10,7 +10,8 @@ class TestLLMs(unittest.TestCase):
         self.env_patcher = patch.dict('os.environ', {
             'OPENAI_API_KEY': os.getenv('OPENAI_API_KEY', 'test-openai-key'),
             'ANTHROPIC_API_KEY': os.getenv('ANTHROPIC_API_KEY', 'test-anthropic-key'),
-            'GROQ_API_KEY': os.getenv('GROQ_API_KEY', 'test-groq-key')
+            'GROQ_API_KEY': os.getenv('GROQ_API_KEY', 'test-groq-key'),
+            "GEMINI_API_KEY": os.getenv('GEMINI_API_KEY', 'test-gemini-key')
         })
         self.env_patcher.start()
 
@@ -26,11 +27,18 @@ class TestLLMs(unittest.TestCase):
         llm = AnthropicLLM("claude-3-5-sonnet-20240620")
         response = llm.generate("What is the capital of France?")
         print(response)
-
+    
     def test_groq_llm(self):
         llm = GroqLLM("llama3-8b-8192")
         response = llm.generate("What is the capital of France?")
         print(response)
+    
+    def test_gemini_llm(self):
+        llm = GeminiLLM("gemini-1.5-pro")
+        response = llm.generate("What is the capital of France?")
+        print(response)
+ 
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -18,7 +18,7 @@ setup(
         "requests",
         "PyPDF2",
         "python-docx",
-        "qdrant-client"
+        "qdrant-client",
         "soundfile"
     ],
     classifiers=[
