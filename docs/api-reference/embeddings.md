@@ -144,7 +144,7 @@ except Exception as e:
 
 Required environment variables:
 - OpenAI: `OPENAI_API_KEY`
-- Hugging Face API: `HUGGINGFACE_API_KEY`
+- Hugging Face Access token: `HUGGINGFACE_API_KEY`
 
 ### Best Practices
 
