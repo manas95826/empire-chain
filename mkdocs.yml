@@ -37,7 +37,7 @@ markdown_extensions:
       custom_fences:
         - name: mermaid
           class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format
+          format: mermaid
   - admonition
   - pymdownx.details
   - pymdownx.tabbed:
@@ -50,6 +50,7 @@ nav:
   - Components:
     - Empire Agent: components/empire_agent.md
     - RAG: components/rag.md
+    - Vector Stores: components/vector_stores.md
     - Chatbots: components/chatbots.md
     - PhiData Agents: components/phidata_agents.md
     - Tools: components/tools.md

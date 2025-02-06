@@ -5,15 +5,14 @@ pip install empire-chain
 """
 from empire_chain.vector_stores import QdrantVectorStore
 from empire_chain.embeddings import OpenAIEmbeddings
+from dotenv import load_dotenv
 
-embeddings = OpenAIEmbeddings("text-embedding-3-small")
+load_dotenv()
 
-vector_store = QdrantVectorStore(url=":memory:")
+store = QdrantVectorStore()
 
-text = """
-your text here
-"""
+text = "your_text_here"
+embedding = OpenAIEmbeddings("text-embedding-3-small")
+store.add(text=text, embedding=embedding)
 
-vector_store.add(text, embeddings.embed(text))
-
-print(vector_store.query(embeddings.embed("what's the cost of the product?"), k=1))
+similar_texts = store.query("your_query_here")  # Returns top 10 similar texts by default

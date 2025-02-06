@@ -34,3 +34,10 @@ def QdrantVectorStore(*args, **kwargs):
     """Factory function for creating a QdrantVectorStore instance."""
     from empire_chain.vector_stores.qdrant import QdrantVectorStore as _QdrantVectorStore
     return _QdrantVectorStore(*args, **kwargs)
+
+def QdrantWrapper(*args, **kwargs):
+    """Factory function for creating a QdrantWrapper instance."""
+    from empire_chain.vector_stores.qdrant import QdrantWrapper as _QdrantWrapper
+    return _QdrantWrapper(*args, **kwargs)
+
+__all__ = ['VectorStore', 'QdrantVectorStore', 'QdrantWrapper']
