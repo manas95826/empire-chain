@@ -65,7 +65,7 @@ We use MkDocs with the Material theme for documentation:
 
 ```bash
 # Install documentation dependencies
-pip install mkdocs-material mkdocs-mermaid2-plugin
+pip install mkdocs-material
 
 # Serve documentation locally
 mkdocs serve

@@ -26,21 +26,17 @@ theme:
 
 plugins:
   - search
-  - mermaid2:
-      version: 10.4.0
-      arguments:
-        securityLevel: 'loose'
 
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
+  - pymdownx.superfences
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
           class: mermaid
-          format: mermaid
   - admonition
   - pymdownx.details
   - pymdownx.tabbed:
