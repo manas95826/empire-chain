@@ -26,7 +26,10 @@ theme:
 
 plugins:
   - search
-  - mermaid2
+  - mermaid2:
+      version: 10.4.0
+      arguments:
+        securityLevel: 'loose'
 
 markdown_extensions:
   - pymdownx.highlight:
@@ -47,6 +50,20 @@ markdown_extensions:
 
 nav:
   - Home: index.md
+  - Getting Started:
+    - Installation: getting-started/installation.md
+    - Quickstart: getting-started/quickstart.md
+  - User Guide:
+    - Core Concepts: user-guide/core-concepts.md
+    - Document Processing: user-guide/document-processing.md
+    - LLM Integration: user-guide/llm-integration.md
+    - Visualization: user-guide/visualization.md
+  - API Reference:
+    - LLMs: api-reference/llms.md
+    - Vector Stores: api-reference/vector-stores.md
+  - Tutorials:
+    - Chat with PDF: tutorials/chat-with-pdf.md
+    - Empire RAG: tutorials/empire-rag.md
   - Components:
     - Empire Agent: components/empire_agent.md
     - RAG: components/rag.md

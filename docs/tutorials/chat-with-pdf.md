@@ -136,6 +136,6 @@ if __name__ == "__main__":
 
 ## Next Steps
 
-- Try the [Chat with Images](chat-with-images.md) tutorial
-- Learn about [Data Visualization](visualize_data.md)
-- Explore [Vector Store Options](../user-guide/vector-stores.md) 
+- Try the [Chat with Images](../components/chatbots.md) tutorial
+- Learn about [Data Visualization](../user-guide/visualization.md)
+- Explore [Vector Store Options](../components/vector_stores.md) 
