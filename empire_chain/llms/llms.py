@@ -7,16 +7,17 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class LLM:
-    def __init__(self, model: str, custom_instructions: str = ""):
+    def __init__(self, model: str, api_key: str = None, custom_instructions: str = ""):
         self.model = model
+        self.api_key = api_key
         self.custom_instructions = custom_instructions
     def generate(self, prompt: str) -> str:
         pass
 
 class OpenAILLM(LLM):
-    def __init__(self, model: str = "gpt-4o-mini", custom_instructions: str = ""):
-        super().__init__(model, custom_instructions)
-        self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    def __init__(self, model: str = "gpt-4o-mini", api_key: str = None, custom_instructions: str = ""):
+        super().__init__(model, api_key, custom_instructions)
+        self.client = OpenAI(api_key=self.api_key or os.getenv("OPENAI_API_KEY"))
 
     def generate(self, prompt: str) -> str:
         response = self.client.chat.completions.create(
@@ -29,9 +30,9 @@ class OpenAILLM(LLM):
         return response.choices[0].message.content
 
 class AnthropicLLM(LLM):
-    def __init__(self, model: str = "claude-3-5-sonnet-20240620", custom_instructions: str = ""):
-        super().__init__(model, custom_instructions)
-        self.client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+    def __init__(self, model: str = "claude-3-5-sonnet-20240620", api_key: str = None, custom_instructions: str = ""):
+        super().__init__(model, api_key, custom_instructions)
+        self.client = Anthropic(api_key=self.api_key or os.getenv("ANTHROPIC_API_KEY"))
 
     def generate(self, prompt: str) -> str:
         response = self.client.messages.create(
@@ -42,9 +43,9 @@ class AnthropicLLM(LLM):
         return response.content[0].text
     
 class GroqLLM(LLM):
-    def __init__(self, model: str = "llama3-8b-8192", custom_instructions: str = ""):
-        super().__init__(model, custom_instructions)
-        self.client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+    def __init__(self, model: str = "llama3-8b-8192", api_key: str = None, custom_instructions: str = ""):
+        super().__init__(model, api_key, custom_instructions)
+        self.client = Groq(api_key=self.api_key or os.getenv("GROQ_API_KEY"))
 
     def generate(self, prompt: str) -> str:
         response = self.client.chat.completions.create(
@@ -58,10 +59,10 @@ class GroqLLM(LLM):
 
 
 class GeminiLLM(LLM):
-    def __init__(self, model: str = "gemini-1.5-flash", custom_instructions: str = ""):
-        super().__init__(model, custom_instructions)
+    def __init__(self, model: str = "gemini-1.5-flash", api_key: str = None, custom_instructions: str = ""):
+        super().__init__(model, api_key, custom_instructions)
         self.client = OpenAI(
-            api_key=os.getenv("GEMINI_API_KEY"),
+            api_key=self.api_key or os.getenv("GEMINI_API_KEY"),
             base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
         )
 

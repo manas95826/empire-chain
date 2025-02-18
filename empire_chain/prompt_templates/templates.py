@@ -170,6 +170,74 @@ Please provide:
 4. Implementation guidelines
 5. Potential challenges"""
 
+class MedicalAnalysis:
+    patient_info: str
+    symptoms: str
+    medical_history: str
+    
+    def __str__(self):
+        return format_prompt(MEDICAL_ANALYSIS_TEMPLATE, 
+                           patient_info=self.patient_info,
+                           symptoms=self.symptoms,
+                           medical_history=self.medical_history)
+
+class MedicalResearch:
+    topic: str
+    background: str
+    
+    def __str__(self):
+        return format_prompt(MEDICAL_RESEARCH_TEMPLATE,
+                           topic=self.topic,
+                           background=self.background)
+
+class LogicalAnalysis:
+    problem: str
+    context: str
+    
+    def __str__(self):
+        return format_prompt(LOGICAL_ANALYSIS_TEMPLATE,
+                           problem=self.problem,
+                           context=self.context)
+
+class CriticalThinking:
+    scenario: str
+    question: str
+    
+    def __str__(self):
+        return format_prompt(CRITICAL_THINKING_TEMPLATE,
+                           scenario=self.scenario,
+                           question=self.question)
+
+class FinancialAnalysis:
+    financial_data: str
+    analysis_type: str
+    
+    def __str__(self):
+        return format_prompt(FINANCIAL_ANALYSIS_TEMPLATE,
+                           financial_data=self.financial_data,
+                           analysis_type=self.analysis_type)
+
+class CodeReview:
+    language: str
+    context: str
+    code: str
+    
+    def __str__(self):
+        return format_prompt(CODE_REVIEW_TEMPLATE,
+                           language=self.language,
+                           context=self.context,
+                           code=self.code)
+
+# Add list of available templates
+available_templates = [
+    MedicalAnalysis,
+    MedicalResearch,
+    LogicalAnalysis,
+    CriticalThinking,
+    FinancialAnalysis,
+    CodeReview
+]
+
 def format_prompt(template: str, **kwargs) -> str:
     """
     Format a prompt template with the provided arguments.
