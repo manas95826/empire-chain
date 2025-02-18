@@ -163,8 +163,9 @@ class LLMPlayground:
                         with col:
                             st.subheader(f"🤖 {llm_name}")
                             try:
-                                # Initialize LLM with API key
-                                llm_instance = self.llms[llm_name].__class__(api_key=api_key)
+                                # Create a new instance with the provided API key
+                                llm_class = self.llms[llm_name].__class__
+                                llm_instance = llm_class(api_key=api_key)
                                 
                                 start_time = time.time()
                                 response = llm_instance.generate(prompt)
