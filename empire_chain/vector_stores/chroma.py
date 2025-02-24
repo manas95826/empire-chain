@@ -2,6 +2,18 @@ import chromadb
 from typing import List, Dict, Optional
 from empire_chain.vector_stores import VectorStore
 
+
+
+def get_default_hnsw_config() -> Dict[str, any]:
+    """Get default HNSW index configuration."""
+    return {
+        "hnsw:space": "l2",  # Distance metric: 'l2', 'cosine', or 'ip'
+        "hnsw:construction_ef": 100,  # Controls the number of neighbors explored during index construction
+        "hnsw:M": 16,  # Maximum number of connections for each element in the graph
+        "hnsw:search_ef": 100,  # Controls the number of neighbors explored during search
+
+    }
+
 class ChromaDBWrapper:
     """Wrapper for ChromaDB client operations"""
 
@@ -33,7 +45,7 @@ class ChromaDBWrapper:
             self,
             name: str,
             emd_fn: Optional[callable] = None,
-            metadata: dict = None,
+            metadata: Optional[Dict[str,any]] = None,
     ):
         """Create a collection in ChromaDB with customizable EMD function
         
@@ -42,7 +54,7 @@ class ChromaDBWrapper:
             emd_fn: Embd function
             metadata: Collection metadata
         """
-
+        metadata = get_default_hnsw_config()
         try:
             return self.client.create_collection(
                 name=name,
