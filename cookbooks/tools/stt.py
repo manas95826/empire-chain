@@ -7,7 +7,3 @@ load_dotenv()
 stt = GroqSTT()
 text = stt.transcribe("audio.mp3")
 print(text)
-
-stt = HuggingFaceSTT()
-text = stt.transcribe("audio.mp3")
-print(text)
