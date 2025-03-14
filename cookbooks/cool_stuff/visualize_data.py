@@ -22,5 +22,5 @@ Empire chain got a fund raise of $100M from a new investor in 2024 and $50M from
 analyzer = DataAnalyzer()
 analyzed_data = analyzer.analyze(data)
         
-chart = ChartFactory.create_chart('Bar Chart', analyzed_data)
+chart = ChartFactory.create_chart('Bar Graph', analyzed_data)
 chart.show()
