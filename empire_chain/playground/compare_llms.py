@@ -239,15 +239,3 @@ class LLMPlayground:
         
         # Clear the animation placeholder
         placeholder.empty()
-
-def launch_playground():
-    playground = LLMPlayground()
-    playground.launch()
-
-if __name__ == "__main__":
-    launch_playground()
-
-
-
-
-

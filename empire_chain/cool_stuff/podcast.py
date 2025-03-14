@@ -125,7 +125,14 @@ Return only a JSON array of conversation turns, like:
 
     def generate(self, topic: str):
         self.download_required_files()  # Download required files first
-        kokoro = Kokoro("kokoro-v0_19.onnx", "voices.json")
+        
+        # Load voices.json as a regular JSON file
+        with open("voices.json", "r") as f:
+            voices = json.load(f)
+            
+        # Initialize Kokoro with the model and voices
+        kokoro = Kokoro("kokoro-v0_19.onnx", voices)
+        
         audio = []
         completion = self.client(topic)
         response_content = completion.choices[0].message.content
