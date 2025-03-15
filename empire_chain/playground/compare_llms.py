@@ -239,3 +239,7 @@ class LLMPlayground:
         
         # Clear the animation placeholder
         placeholder.empty()
+
+def launch_playground():
+    playground = LLMPlayground()
+    playground.launch()
