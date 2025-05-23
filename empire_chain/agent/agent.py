@@ -54,7 +54,7 @@ class FunctionRegistry:
         return list(self.functions.keys())
 
 class Agent:
-    def __init__(self, model: str = "mixtral-8x7b-32768"):
+    def __init__(self, model: str = "mistral-saba-24b"):
         self.llm = GroqLLM(model=model)
         self.registry = FunctionRegistry()
         
