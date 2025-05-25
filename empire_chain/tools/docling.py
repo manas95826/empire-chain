@@ -1,3 +1,6 @@
+# Empire Chain Document Processing Tool
+# Updated: March 2025 - Adding comments for version tracking
+
 # from docling.document_converter import DocumentConverter
 
 # class Docling:

@@ -1,3 +1,6 @@
+# Empire Chain Web Crawler Module
+# Updated: March 2025 - Adding comments for version tracking
+
 import asyncio
 from crawl4ai import AsyncWebCrawler
 

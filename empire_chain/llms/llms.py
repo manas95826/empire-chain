@@ -1,3 +1,6 @@
+# Empire Chain LLM Integration Module
+# Updated: March 2025 - Adding comments for version tracking
+
 from openai import OpenAI
 from anthropic import Anthropic
 from groq import Groq

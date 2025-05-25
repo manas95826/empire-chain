@@ -1,3 +1,6 @@
+# Empire Chain Package Setup
+# Updated: March 2025 - Adding comments for version tracking
+
 from setuptools import setup, find_packages
 
 setup(

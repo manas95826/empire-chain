@@ -1,3 +1,6 @@
+# Empire Chain - Your AI Orchestration Framework
+# Updated: March 2025 - Adding comments for version tracking
+
 import sys
 
 def display_welcome():

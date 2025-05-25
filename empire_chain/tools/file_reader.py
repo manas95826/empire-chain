@@ -1,3 +1,6 @@
+# Empire Chain File Reader Module
+# Updated: March 2025 - Adding comments for version tracking
+
 from typing import Protocol
 from pathlib import Path
 import PyPDF2
