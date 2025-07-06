@@ -1,4 +1,5 @@
-from typing import List, Optional
+from typing import List, Dict, Any, Optional
+import re 
 
 # Medical Templates
 MEDICAL_ANALYSIS_TEMPLATE = """
@@ -169,6 +170,67 @@ Please provide:
 3. Technical considerations
 4. Implementation guidelines
 5. Potential challenges"""
+
+class PromptTemplate:
+    """Core template engine with {{parameter}} support"""
+    def __init__(self, template: str):
+        self.template = template
+        self.placeholders = self._find_template_variables()
+        
+    def _find_template_variables(self) -> set:
+        """Identify all {{variable}} names in the template"""
+        variables = set()
+        parts = self.template.split('{{')
+        for part in parts[1:]:  # Skip text before first {{
+            var_name = part.split('}}')[0].strip()
+            if var_name:
+                variables.add(var_name)
+        return variables
+    
+    def format(self, **kwargs) -> str:
+        """Replace {{variables}} with provided values"""
+        # Validate
+        missing = [var for var in self.placeholders if var not in kwargs]
+        if missing:
+            raise ValueError(f"Missing values for: {', '.join(missing)}")
+        
+        # Replace each variable
+        result = self.template
+        for var in self.placeholders:
+            result = result.replace('{{' + var + '}}', str(kwargs[var]))
+        return result
+
+
+class FewShotPromptTemplate:
+    """Few-shot learning template processor"""
+    def __init__(
+        self,
+        main_template: str,
+        example_template: str,
+        examples: List[Dict[str, Any]],
+        example_placeholder: str = "examples",
+        example_separator: str = "\n\n"
+    ):
+        self.main_template = PromptTemplate(main_template)
+        self.example_template = PromptTemplate(example_template)
+        self.examples = examples
+        self.example_placeholder = example_placeholder
+        self.separator = example_separator
+
+    def format(self, **kwargs) -> str:
+        # Format all examples
+        formatted_examples = []
+        for example in self.examples:
+            formatted_examples.append(self.example_template.format(**example))
+        
+        # Combine examples
+        examples_block = self.separator.join(formatted_examples)
+        
+        # Prepare context
+        context = kwargs.copy()
+        context[self.example_placeholder] = examples_block
+        
+        return self.main_template.format(**context)
 
 class MedicalAnalysis:
     patient_info: str
