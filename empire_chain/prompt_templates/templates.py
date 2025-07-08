@@ -1,5 +1,36 @@
 from typing import List, Dict, Any, Optional
-import re 
+
+# Predefined PromptTemplate constants
+CODE_GENERATION_TEMPLATE = """
+Generate a {{language}} function that {{task}}.
+
+Requirements:
+- Function name: {{function_name}}
+- Parameters: {{parameters}}
+- Include error handling and documentation
+"""
+
+# Predefined FewShotPromptTemplate constants
+SENTIMENT_ANALYSIS_MAIN_TEMPLATE = """
+Analyze sentiment based on these examples:
+
+{{examples}}
+
+Now analyze: {{query}}
+Sentiment: """
+
+SENTIMENT_ANALYSIS_EXAMPLE_TEMPLATE = "Text: {{text}} → Sentiment: {{sentiment}}"
+
+TRANSLATION_MAIN_TEMPLATE = """
+Translate considering context and formality:
+
+{{examples}}
+
+Translate: {{query}}
+Context: {{context}}
+Spanish: """
+
+TRANSLATION_EXAMPLE_TEMPLATE = "English: {{english}} ({{context}}) → Spanish: {{spanish}}"
 
 # Medical Templates
 MEDICAL_ANALYSIS_TEMPLATE = """
