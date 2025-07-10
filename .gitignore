@@ -23,3 +23,4 @@ video.mp4
 *.ini
 *.cfg
 *.env
+venv
