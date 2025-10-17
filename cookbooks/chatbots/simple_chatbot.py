@@ -5,7 +5,7 @@ Please run the following command to install the necessary dependencies and store
 !streamlit run app.py
 """
 from empire_chain.streamlit import Chatbot
-from empire_chain.llms.llms import OpenAILLM
+from empire_chain.llms.llms import GroqLLM
 
-chatbot = Chatbot(title="Empire Chatbot", llm=OpenAILLM("gpt-4o-mini"))
+chatbot = Chatbot(title="Empire Chatbot", llm=GroqLLM("llama3-8b-8192"), chat_history=False, verbose=False)
 chatbot.chat()

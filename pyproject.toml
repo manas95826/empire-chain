@@ -1,10 +1,11 @@
+# empire chain
 [build-system]
 requires = ["setuptools>=42", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "empire-chain"
-version = "0.4.6"
+version = "0.5.4"
 description = "An orchestration framework for all your AI needs"
 readme = "README.md"
 requires-python = ">=3.10"

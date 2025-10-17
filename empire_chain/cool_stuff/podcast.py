@@ -21,10 +21,15 @@ class GeneratePodcast:
         """Download required model and voices files if they don't exist."""
         files = {
             "kokoro-v0_19.onnx": "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files/kokoro-v0_19.onnx",
-            "voices.json": "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files/voices.json"
+            "voices.bin": "https://github.com/nazdridoy/kokoro-tts/releases/download/v1.0.0/voices-v1.0.bin",
+            "voices.json": "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files/voices.json"  # fallback
         }
         
         for filename, url in files.items():
+            # Skip voices.json if we already have voices.bin
+            if filename == "voices.json" and os.path.exists("voices.bin"):
+                continue
+                
             if not os.path.exists(filename):
                 print(f"Downloading {filename} from {url}...")
                 response = requests.get(url, stream=True)
@@ -125,7 +130,13 @@ Return only a JSON array of conversation turns, like:
 
     def generate(self, topic: str):
         self.download_required_files()  # Download required files first
-        kokoro = Kokoro("kokoro-v0_19.onnx", "voices.json")
+        
+        # Use voices.bin if available, otherwise use voices.json
+        voices_path = "voices.bin" if os.path.exists("voices.bin") else "voices.json"
+        
+        # Initialize Kokoro with the model file and voices path
+        kokoro = Kokoro("kokoro-v0_19.onnx", voices_path)
+        
         audio = []
         completion = self.client(topic)
         response_content = completion.choices[0].message.content

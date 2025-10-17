@@ -1,4 +1,4 @@
-# Contributing to Empire Chain
+# empire chain
 
 We love your input! We want to make contributing to Empire Chain as easy and transparent as possible, whether it's:
 
