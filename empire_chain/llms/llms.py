@@ -20,7 +20,14 @@ class LLM:
 class OpenAILLM(LLM):
     def __init__(self, model: str = "gpt-4o-mini", api_key: str = None, custom_instructions: str = ""):
         super().__init__(model, api_key, custom_instructions)
-        self.client = OpenAI(api_key=self.api_key or os.getenv("OPENAI_API_KEY"))
+        self._client = None
+
+    @property
+    def client(self):
+        if self._client is None:
+            api_key = self.api_key or os.getenv("OPENAI_API_KEY")
+            self._client = OpenAI(api_key=api_key)
+        return self._client
 
     def generate(self, prompt: str) -> str:
         response = self.client.chat.completions.create(
@@ -35,7 +42,14 @@ class OpenAILLM(LLM):
 class AnthropicLLM(LLM):
     def __init__(self, model: str = "claude-3-5-sonnet-20240620", api_key: str = None, custom_instructions: str = ""):
         super().__init__(model, api_key, custom_instructions)
-        self.client = Anthropic(api_key=self.api_key or os.getenv("ANTHROPIC_API_KEY"))
+        self._client = None
+
+    @property
+    def client(self):
+        if self._client is None:
+            api_key = self.api_key or os.getenv("ANTHROPIC_API_KEY")
+            self._client = Anthropic(api_key=api_key)
+        return self._client
 
     def generate(self, prompt: str) -> str:
         response = self.client.messages.create(
@@ -48,7 +62,14 @@ class AnthropicLLM(LLM):
 class GroqLLM(LLM):
     def __init__(self, model: str = "llama3-8b-8192", api_key: str = None, custom_instructions: str = ""):
         super().__init__(model, api_key, custom_instructions)
-        self.client = Groq(api_key=self.api_key or os.getenv("GROQ_API_KEY"))
+        self._client = None
+
+    @property
+    def client(self):
+        if self._client is None:
+            api_key = self.api_key or os.getenv("GROQ_API_KEY")
+            self._client = Groq(api_key=api_key)
+        return self._client
 
     def generate(self, prompt: str) -> str:
         response = self.client.chat.completions.create(
@@ -64,10 +85,17 @@ class GroqLLM(LLM):
 class GeminiLLM(LLM):
     def __init__(self, model: str = "gemini-1.5-flash", api_key: str = None, custom_instructions: str = ""):
         super().__init__(model, api_key, custom_instructions)
-        self.client = OpenAI(
-            api_key=self.api_key or os.getenv("GEMINI_API_KEY"),
-            base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
-        )
+        self._client = None
+
+    @property
+    def client(self):
+        if self._client is None:
+            api_key = self.api_key or os.getenv("GEMINI_API_KEY")
+            self._client = OpenAI(
+                api_key=api_key,
+                base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
+            )
+        return self._client
 
     def generate(self, prompt: str) -> str:
         response = self.client.chat.completions.create(
