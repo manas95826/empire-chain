@@ -290,7 +290,7 @@ result = crawler.crawl(url="https://www.geekroom.in", format="markdown")
 print(result)
 ```
 
-### Speech to Text
+### Speech to Text funtionality 
 
 ```python
 from empire_chain.stt.stt import GroqSTT
@@ -308,7 +308,7 @@ text = stt.transcribe("audio.mp3")
 print(text)
 ```
 
-## Cool Stuff
+## Cool Stuffs
 
 ### Visualize Data
 
